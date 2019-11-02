@@ -71,13 +71,13 @@ Area                                    Addr        Size        Decimal Bytes (A
      000001AC  l__HOME                         
      00000200  s__CODE                         
      00000E77  l__BASE                         
-     000015D9  l__CODE                         
-     000017D9  s__HOME                         
-     00001985  s__BASE                         
-     000027FC  s__GSINIT                       
-     000027FC  s__GSINITTAIL                   
-     000027FC  s__LIT                          
-     000027FD  s__GSFINAL                      
+     00001773  l__CODE                         
+     00001973  s__HOME                         
+     00001B1F  s__BASE                         
+     00002996  s__GSINIT                       
+     00002996  s__GSINITTAIL                   
+     00002996  s__LIT                          
+     00002997  s__GSFINAL                      
      0000C0A0  s__DATA                         
      0000C0AB  s__BSS                          
      0000C12F  s__HEAP                         
@@ -87,52 +87,55 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_CODE                               00000200    000015D9 =        5593. bytes (REL,CON)
+_CODE                               00000200    00001773 =        6003. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
      00000200  _clear_screen                      Title_screen
      00000226  _coord_2d_to_1d                    Title_screen
-     00000232  _title_screen                      Title_screen
-     00000282  _init                              Title_screen
-     000002A9  _draw_board                        Title_screen
-     0000037E  _update                            Title_screen
-     000003DC  _draw_cursor                       Title_screen
-     000004A3  _player_play                       Title_screen
-     0000053F  _game                              Title_screen
-     0000054E  _main                              Title_screen
-     00000554  _putchar                           font.ms
-     0000055D  _setchar                           font.ms
-     00000566  _gotoxy                            font.ms
-     00000571  _posx                              font.ms
-     00000582  _posy                              font.ms
-     00000593  .adv_gcurs                         Drawing1
-     000005B0  .circle                            Drawing1
-     00000653  .horlin                            Drawing1
-     0000068B  .verlin                            Drawing1
-     000006E7  .circplot                          Drawing1
-     00000765  .box                               Drawing1
-     0000083B  .line                              Drawing1
-     0000095C  .xonly                             Drawing1
-     00000AAB  .yonly                             Drawing1
-     00000ACC  .plot                              Drawing1
-     00000AE9  .wrbyte                            Drawing1
-     00000B6B  .getpix                            Drawing1
-     00000BA0  .wrtchr                            Drawing1
-     00000C04  _gotogxy                           Drawing1
-     00000C0F  _wrtchr                            Drawing1
-     00000C24  _getpix                            Drawing1
-     00000C30  _color                             Drawing1
-     00000C3F  _circle                            Drawing1
-     00000C59  _box                               Drawing1
-     00000C7D  _line                              Drawing1
-     00000C95  _plot_point                        Drawing1
-     00000CA9  _plot                              Drawing1
-     00000CCF  _vprintf                           vprintf
-     00000CE9  _printf                            vprintf
-     00000DEC  __print_format                     printf_large
-     000017B6  ___sdcc_call_hl                    
-     000017B7  _strlen                            _strlen
+     00000232  _init                              Title_screen
+     00000259  _draw_board                        Title_screen
+     0000032E  _update                            Title_screen
+     0000038B  _draw_cursor                       Title_screen
+     00000450  _player_play                       Title_screen
+     000004EC  _player2_play                      Title_screen
+     00000588  _game                              Title_screen
+     0000059D  _title_screen                      Title_screen
+     000005ED  _mode_screen                       Title_screen
+     00000659  _select_mode                       Title_screen
+     000006E5  _main                              Title_screen
+     000006EE  _putchar                           font.ms
+     000006F7  _setchar                           font.ms
+     00000700  _gotoxy                            font.ms
+     0000070B  _posx                              font.ms
+     0000071C  _posy                              font.ms
+     0000072D  .adv_gcurs                         Drawing1
+     0000074A  .circle                            Drawing1
+     000007ED  .horlin                            Drawing1
+     00000825  .verlin                            Drawing1
+     00000881  .circplot                          Drawing1
+     000008FF  .box                               Drawing1
+     000009D5  .line                              Drawing1
+     00000AF6  .xonly                             Drawing1
+     00000C45  .yonly                             Drawing1
+     00000C66  .plot                              Drawing1
+     00000C83  .wrbyte                            Drawing1
+     00000D05  .getpix                            Drawing1
+     00000D3A  .wrtchr                            Drawing1
+     00000D9E  _gotogxy                           Drawing1
+     00000DA9  _wrtchr                            Drawing1
+     00000DBE  _getpix                            Drawing1
+     00000DCA  _color                             Drawing1
+     00000DD9  _circle                            Drawing1
+     00000DF3  _box                               Drawing1
+     00000E17  _line                              Drawing1
+     00000E2F  _plot_point                        Drawing1
+     00000E43  _plot                              Drawing1
+     00000E69  _vprintf                           vprintf
+     00000E83  _printf                            vprintf
+     00000F86  __print_format                     printf_large
+     00001950  ___sdcc_call_hl                    
+     00001951  _strlen                            _strlen
 ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
 Hexadecimal  [32-Bits]
 
@@ -311,117 +314,117 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_HOME                               000017D9    000001AC =         428. bytes (REL,CON)
+_HOME                               00001973    000001AC =         428. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     000017D9  .set_mode                          Runtime
-     000017E9  .remove_VBL                        Runtime
-     000017EF  .remove_LCD                        Runtime
-     000017F5  .remove_TIM                        Runtime
-     000017FB  .remove_SIO                        Runtime
-     00001801  .remove_JOY                        Runtime
-     00001807  .add_VBL                           Runtime
-     0000180D  .add_LCD                           Runtime
-     00001813  .add_TIM                           Runtime
-     00001819  .add_SIO                           Runtime
-     0000181F  .add_JOY                           Runtime
-     00001825  .remove_int                        Runtime
-     00001845  .add_int                           Runtime
-     00001861  .wait_vbl_done                     Runtime
-     00001861  _wait_vbl_done                     Runtime
-     00001878  .display_off                       Runtime
-     00001878  _display_off                       Runtime
-     00001899  .serial_IO                         Runtime
-     000018C8  _mode                              Runtime
-     000018D1  _get_mode                          Runtime
-     000018D6  _enable_interrupts                 Runtime
-     000018D8  _disable_interrupts                Runtime
-     000018DA  .reset                             Runtime
-     000018DA  _reset                             Runtime
-     000018E0  _set_interrupts                    Runtime
-     000018EB  _remove_VBL                        Runtime
-     000018F6  _remove_LCD                        Runtime
-     00001901  _remove_TIM                        Runtime
-     0000190C  _remove_SIO                        Runtime
-     00001917  _remove_JOY                        Runtime
-     00001922  _add_VBL                           Runtime
-     0000192D  _add_LCD                           Runtime
-     00001938  _add_TIM                           Runtime
-     00001943  _add_SIO                           Runtime
-     0000194E  _add_JOY                           Runtime
-     00001959  _clock                             Runtime
-     00001962  __printTStates                     Runtime
-     00001963  banked_call                        Runtime
-     0000197C  banked_ret                         Runtime
+     00001973  .set_mode                          Runtime
+     00001983  .remove_VBL                        Runtime
+     00001989  .remove_LCD                        Runtime
+     0000198F  .remove_TIM                        Runtime
+     00001995  .remove_SIO                        Runtime
+     0000199B  .remove_JOY                        Runtime
+     000019A1  .add_VBL                           Runtime
+     000019A7  .add_LCD                           Runtime
+     000019AD  .add_TIM                           Runtime
+     000019B3  .add_SIO                           Runtime
+     000019B9  .add_JOY                           Runtime
+     000019BF  .remove_int                        Runtime
+     000019DF  .add_int                           Runtime
+     000019FB  .wait_vbl_done                     Runtime
+     000019FB  _wait_vbl_done                     Runtime
+     00001A12  .display_off                       Runtime
+     00001A12  _display_off                       Runtime
+     00001A33  .serial_IO                         Runtime
+     00001A62  _mode                              Runtime
+     00001A6B  _get_mode                          Runtime
+     00001A70  _enable_interrupts                 Runtime
+     00001A72  _disable_interrupts                Runtime
+     00001A74  .reset                             Runtime
+     00001A74  _reset                             Runtime
+     00001A7A  _set_interrupts                    Runtime
+     00001A85  _remove_VBL                        Runtime
+     00001A90  _remove_LCD                        Runtime
+     00001A9B  _remove_TIM                        Runtime
+     00001AA6  _remove_SIO                        Runtime
+     00001AB1  _remove_JOY                        Runtime
+     00001ABC  _add_VBL                           Runtime
+     00001AC7  _add_LCD                           Runtime
+     00001AD2  _add_TIM                           Runtime
+     00001ADD  _add_SIO                           Runtime
+     00001AE8  _add_JOY                           Runtime
+     00001AF3  _clock                             Runtime
+     00001AFC  __printTStates                     Runtime
+     00001AFD  banked_call                        Runtime
+     00001B16  banked_ret                         Runtime
 ASxxxx Linker V03.00 + NoICE + sdld,  page 24.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_BASE                               00001985    00000E77 =        3703. bytes (REL,CON)
+_BASE                               00001B1F    00000E77 =        3703. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00001985  font_copy_uncompressed             font.ms
-     000019BB  font_copy_compressed               font.ms
-     00001A10  font_load                          font.ms
-     00001A58  font_copy_current                  font.ms
-     00001AA0  font_set                           font.ms
-     00001AAD  .put_char                          font.ms
-     00001AC6  .out_char                          font.ms
-     00001ACD  .del_char                          font.ms
-     00001B28  _font_load                         font.ms
-     00001B36  _font_set                          font.ms
-     00001B45  _font_init                         font.ms
-     00001B67  .cls                               font.ms
-     00001B67  _cls                               font.ms
-     00001B99  .cr_curs                           font.ms
-     00001BAE  .adv_curs                          font.ms
-     00001C0A  .tmode                             font.ms
-     00001C33  .tmode_out                         font.ms
-     00001C43  .padup                             
-     00001C43  _waitpadup                         
-     00001C53  .jpad                              
-     00001C80  .wait_pad                          
-     00001C87  _joypad                            
-     00001C8C  _waitpad                           
-     00001C96  _font_load_ibm_fixed               
-     00001C9D  _font_ibm_fixed                    
-     00001D9F  _font_ibm_fixed_tiles              
-     0000259F  .gmode                             Drawing1
-     00002601  .vbl                               Drawing1
-     0000260C  .lcd                               Drawing1
-     00002619  .draw_image                        Drawing1
-     00002623  .switch_data                       Drawing1
-     0000265A  _switch_data                       Drawing1
-     00002675  _draw_image                        Drawing1
-     00002688  .y_table                           Drawing1
-     000027A8  .init_vram                         
-     000027B6  .init_wtt                          
-     000027C6  .init_btt                          
-     000027D4  .init_tt                           
-     000027DA  .copy_vram                         
-     000027E9  _get_data                          
-     000027E9  _set_data                          
+     00001B1F  font_copy_uncompressed             font.ms
+     00001B55  font_copy_compressed               font.ms
+     00001BAA  font_load                          font.ms
+     00001BF2  font_copy_current                  font.ms
+     00001C3A  font_set                           font.ms
+     00001C47  .put_char                          font.ms
+     00001C60  .out_char                          font.ms
+     00001C67  .del_char                          font.ms
+     00001CC2  _font_load                         font.ms
+     00001CD0  _font_set                          font.ms
+     00001CDF  _font_init                         font.ms
+     00001D01  .cls                               font.ms
+     00001D01  _cls                               font.ms
+     00001D33  .cr_curs                           font.ms
+     00001D48  .adv_curs                          font.ms
+     00001DA4  .tmode                             font.ms
+     00001DCD  .tmode_out                         font.ms
+     00001DDD  .padup                             
+     00001DDD  _waitpadup                         
+     00001DED  .jpad                              
+     00001E1A  .wait_pad                          
+     00001E21  _joypad                            
+     00001E26  _waitpad                           
+     00001E30  _font_load_ibm_fixed               
+     00001E37  _font_ibm_fixed                    
+     00001F39  _font_ibm_fixed_tiles              
+     00002739  .gmode                             Drawing1
+     0000279B  .vbl                               Drawing1
+     000027A6  .lcd                               Drawing1
+     000027B3  .draw_image                        Drawing1
+     000027BD  .switch_data                       Drawing1
+     000027F4  _switch_data                       Drawing1
+     0000280F  _draw_image                        Drawing1
+     00002822  .y_table                           Drawing1
+     00002942  .init_vram                         
+     00002950  .init_wtt                          
+     00002960  .init_btt                          
+     0000296E  .init_tt                           
+     00002974  .copy_vram                         
+     00002983  _get_data                          
+     00002983  _set_data                          
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 25.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_GSINIT                             000027FC    00000000 =           0. bytes (REL,CON)
+_GSINIT                             00002996    00000000 =           0. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     000027FC  gsinit                             Runtime
+     00002996  gsinit                             Runtime
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 26.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_GSINITTAIL                         000027FC    00000001 =           1. bytes (REL,CON)
+_GSINITTAIL                         00002996    00000001 =           1. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------

@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by SDCC : free open source ANSI-C Compiler
 ; Version 3.5.0 #9253 (Apr  3 2018) (Linux)
-; This file was generated Sat Nov  2 17:11:01 2019
+; This file was generated Sat Nov  2 18:49:56 2019
 ;--------------------------------------------------------
 	.module Title_screen
 	.optsdcc -mgbz80
@@ -10,13 +10,16 @@
 ; Public variables in this module
 ;--------------------------------------------------------
 	.globl _main
+	.globl _select_mode
+	.globl _mode_screen
+	.globl _title_screen
 	.globl _game
+	.globl _player2_play
 	.globl _player_play
 	.globl _draw_cursor
 	.globl _update
 	.globl _draw_board
 	.globl _init
-	.globl _title_screen
 	.globl _coord_2d_to_1d
 	.globl _clear_screen
 	.globl _setchar
@@ -114,58 +117,17 @@ _coord_2d_to_1d::
 	add	a, (hl)
 	ld	e,a
 	ret
-;Title_screen.c:47: void	title_screen()
-;	---------------------------------
-; Function title_screen
-; ---------------------------------
-_title_screen::
-;Title_screen.c:49: clear_screen();
-	call	_clear_screen
-;Title_screen.c:50: gotoxy(4, 5);
-	ld	hl,#0x0504
-	push	hl
-	call	_gotoxy
-	add	sp, #2
-;Title_screen.c:51: printf("Tic Tac Toe !");
-	ld	de,#___str_0
-	push	de
-	call	_printf
-	add	sp, #2
-;Title_screen.c:52: gotoxy(3, 15);
-	ld	hl,#0x0F03
-	push	hl
-	call	_gotoxy
-	add	sp, #2
-;Title_screen.c:53: printf("- PRESS START -");
-	ld	de,#___str_1
-	push	de
-	call	_printf
-	add	sp, #2
-;Title_screen.c:54: waitpad(J_START);
-	ld	a,#0x80
-	push	af
-	inc	sp
-	call	_waitpad
-	inc	sp
-;Title_screen.c:55: waitpadup();
-	jp	_waitpadup
-___str_0:
-	.ascii "Tic Tac Toe !"
-	.db 0x00
-___str_1:
-	.ascii "- PRESS START -"
-	.db 0x00
-;Title_screen.c:58: void	init(void)
+;Title_screen.c:47: void	init(void)
 ;	---------------------------------
 ; Function init
 ; ---------------------------------
 _init::
 	dec	sp
-;Title_screen.c:62: for (i = 0 ; i < 9 ; i++)
+;Title_screen.c:51: for (i = 0 ; i < 9 ; i++)
 	ldhl	sp,#0
 	ld	(hl),#0x00
 00102$:
-;Title_screen.c:64: GAME_BOARD[i] = EMPTY;
+;Title_screen.c:53: GAME_BOARD[i] = EMPTY;
 	ld	de,#_GAME_BOARD
 	ldhl	sp,#0
 	ld	l,(hl)
@@ -175,141 +137,141 @@ _init::
 	ld	b,h
 	ld	a,#0x20
 	ld	(bc),a
-;Title_screen.c:62: for (i = 0 ; i < 9 ; i++)
+;Title_screen.c:51: for (i = 0 ; i < 9 ; i++)
 	ldhl	sp,#0
 	inc	(hl)
 	ld	a,(hl)
 	sub	a, #0x09
 	jr	C,00102$
-;Title_screen.c:67: GAME_CURSOR_X = 1;
+;Title_screen.c:56: GAME_CURSOR_X = 1;
 	ld	hl,#_GAME_CURSOR_X
 	ld	(hl),#0x01
-;Title_screen.c:68: GAME_CURSOR_Y = 1;
+;Title_screen.c:57: GAME_CURSOR_Y = 1;
 	ld	hl,#_GAME_CURSOR_Y
 	ld	(hl),#0x01
 	inc	sp
 	ret
-;Title_screen.c:71: void	draw_board(void)
+;Title_screen.c:60: void	draw_board(void)
 ;	---------------------------------
 ; Function draw_board
 ; ---------------------------------
 _draw_board::
-;Title_screen.c:73: clear_screen();
+;Title_screen.c:62: clear_screen();
 	call	_clear_screen
-;Title_screen.c:74: gotoxy(4, 1);
+;Title_screen.c:63: gotoxy(4, 1);
 	ld	hl,#0x0104
 	push	hl
 	call	_gotoxy
 	add	sp, #2
-;Title_screen.c:75: printf("Tic Tac Toe");
-	ld	de,#___str_2
+;Title_screen.c:64: printf("Tic Tac Toe");
+	ld	de,#___str_0
 	push	de
 	call	_printf
 	add	sp, #2
-;Title_screen.c:76: gotoxy(1, 17);
+;Title_screen.c:65: gotoxy(1, 17);
 	ld	hl,#0x1101
 	push	hl
 	call	_gotoxy
 	add	sp, #2
-;Title_screen.c:77: printf("X you - O Computer");
-	ld	de,#___str_3
+;Title_screen.c:66: printf("X you - O Computer");
+	ld	de,#___str_1
 	push	de
 	call	_printf
 	add	sp, #2
-;Title_screen.c:78: gotoxy(0, 4);
+;Title_screen.c:67: gotoxy(0, 4);
 	ld	hl,#0x0400
 	push	hl
 	call	_gotoxy
 	add	sp, #2
-;Title_screen.c:79: printf("       |   |   \n");
-	ld	de,#___str_4
+;Title_screen.c:68: printf("       |   |   \n");
+	ld	de,#___str_2
 	push	de
 	call	_printf
 	add	sp, #2
-;Title_screen.c:80: printf("       |   |   \n");
-	ld	de,#___str_4
+;Title_screen.c:69: printf("       |   |   \n");
+	ld	de,#___str_2
 	push	de
 	call	_printf
 	add	sp, #2
-;Title_screen.c:81: printf("       |   |   \n");
-	ld	de,#___str_4
+;Title_screen.c:70: printf("       |   |   \n");
+	ld	de,#___str_2
 	push	de
 	call	_printf
 	add	sp, #2
-;Title_screen.c:82: printf("    ---+---+---\n");
-	ld	de,#___str_5
+;Title_screen.c:71: printf("    ---+---+---\n");
+	ld	de,#___str_3
 	push	de
 	call	_printf
 	add	sp, #2
-;Title_screen.c:83: printf("       |   |   \n");
-	ld	de,#___str_4
+;Title_screen.c:72: printf("       |   |   \n");
+	ld	de,#___str_2
 	push	de
 	call	_printf
 	add	sp, #2
-;Title_screen.c:84: printf("       |   |   \n");
-	ld	de,#___str_4
+;Title_screen.c:73: printf("       |   |   \n");
+	ld	de,#___str_2
 	push	de
 	call	_printf
 	add	sp, #2
-;Title_screen.c:85: printf("       |   |   \n");
-	ld	de,#___str_4
+;Title_screen.c:74: printf("       |   |   \n");
+	ld	de,#___str_2
 	push	de
 	call	_printf
 	add	sp, #2
-;Title_screen.c:86: printf("    ---+---+---\n");
-	ld	de,#___str_5
+;Title_screen.c:75: printf("    ---+---+---\n");
+	ld	de,#___str_3
 	push	de
 	call	_printf
 	add	sp, #2
-;Title_screen.c:87: printf("       |   |   \n");
-	ld	de,#___str_4
+;Title_screen.c:76: printf("       |   |   \n");
+	ld	de,#___str_2
 	push	de
 	call	_printf
 	add	sp, #2
-;Title_screen.c:88: printf("       |   |   \n");
-	ld	de,#___str_4
+;Title_screen.c:77: printf("       |   |   \n");
+	ld	de,#___str_2
 	push	de
 	call	_printf
 	add	sp, #2
-;Title_screen.c:89: printf("       |   |   \n");
-	ld	de,#___str_4
+;Title_screen.c:78: printf("       |   |   \n");
+	ld	de,#___str_2
 	push	de
 	call	_printf
 	add	sp, #2
 	ret
-___str_2:
+___str_0:
 	.ascii "Tic Tac Toe"
 	.db 0x00
-___str_3:
+___str_1:
 	.ascii "X you - O Computer"
 	.db 0x00
-___str_4:
+___str_2:
 	.ascii "       |   |   "
 	.db 0x0A
 	.db 0x00
-___str_5:
+___str_3:
 	.ascii "    ---+---+---"
 	.db 0x0A
 	.db 0x00
-;Title_screen.c:92: void	update(void)
+;Title_screen.c:81: void	update(void)
 ;	---------------------------------
 ; Function update
 ; ---------------------------------
 _update::
 	add	sp, #-4
-;Title_screen.c:100: for (y = 0 ; y < 3 ; y++)
+;Title_screen.c:89: for (y = 0 ; y < 3 ; y++)
 	ld	b,#0x00
-;Title_screen.c:102: for (x = 0 ; x < 3 ; x++)
+;Title_screen.c:91: for (x = 0 ; x < 3 ; x++)
 00109$:
 	ld	a,b
 	add	a, a
 	add	a, a
 	add	a, #0x05
-	ldhl	sp,#3
+	ldhl	sp,#1
 	ld	(hl),a
 	ld	c,#0x00
 00103$:
-;Title_screen.c:104: i = coord_2d_to_1d(x, y);
+;Title_screen.c:93: i = coord_2d_to_1d(x, y);
 	push	bc
 	push	bc
 	inc	sp
@@ -321,15 +283,15 @@ _update::
 	pop	bc
 	ldhl	sp,#0
 	ld	(hl),e
-;Title_screen.c:105: graph_x = 4 + x * 4 + 1;
+;Title_screen.c:94: graph_x = 4 + x * 4 + 1;
 	ld	a,c
 	add	a, a
 	add	a, a
 	add	a, #0x05
 	ld	d,a
-;Title_screen.c:107: gotoxy(graph_x, graph_y);
+;Title_screen.c:96: gotoxy(graph_x, graph_y);
 	push	bc
-	ldhl	sp,#5
+	inc	hl
 	ld	a,(hl)
 	push	af
 	inc	sp
@@ -338,7 +300,7 @@ _update::
 	call	_gotoxy
 	add	sp, #2
 	pop	bc
-;Title_screen.c:108: setchar(GAME_BOARD[i]);
+;Title_screen.c:97: setchar(GAME_BOARD[i]);
 	ld	de,#_GAME_BOARD
 	ldhl	sp,#0
 	ld	l,(hl)
@@ -346,7 +308,7 @@ _update::
 	add	hl,de
 	ld	a,l
 	ld	d,h
-	ldhl	sp,#1
+	ldhl	sp,#2
 	ld	(hl+),a
 	ld	(hl),d
 	dec	hl
@@ -360,25 +322,25 @@ _update::
 	call	_setchar
 	inc	sp
 	pop	bc
-;Title_screen.c:102: for (x = 0 ; x < 3 ; x++)
+;Title_screen.c:91: for (x = 0 ; x < 3 ; x++)
 	inc	c
 	ld	a,c
 	sub	a, #0x03
 	jp	C,00103$
-;Title_screen.c:100: for (y = 0 ; y < 3 ; y++)
+;Title_screen.c:89: for (y = 0 ; y < 3 ; y++)
 	inc	b
 	ld	a,b
 	sub	a, #0x03
 	jp	C,00109$
 	add	sp, #4
 	ret
-;Title_screen.c:113: void	draw_cursor(UINT8 cursor_char)
+;Title_screen.c:102: void	draw_cursor(UINT8 cursor_char)
 ;	---------------------------------
 ; Function draw_cursor
 ; ---------------------------------
 _draw_cursor::
 	add	sp, #-9
-;Title_screen.c:115: UINT8 graph_x = GAME_CURSOR_X * 4 + 5;
+;Title_screen.c:104: UINT8 graph_x = GAME_CURSOR_X * 4 + 5;
 	ld	hl,#_GAME_CURSOR_X
 	ld	a,(hl)
 	add	a, a
@@ -386,37 +348,34 @@ _draw_cursor::
 	add	a, #0x05
 	ldhl	sp,#0
 	ld	(hl),a
-;Title_screen.c:116: UINT8 graph_y = GAME_CURSOR_Y * 4 + 5;
+;Title_screen.c:105: UINT8 graph_y = GAME_CURSOR_Y * 4 + 5;
 	ld	hl,#_GAME_CURSOR_Y
 	ld	a,(hl)
 	add	a, a
 	add	a, a
 	add	a, #0x05
-	ldhl	sp,#1
+	ldhl	sp,#2
 	ld	(hl),a
-;Title_screen.c:120: for (cy = graph_y - 1 ; cy <= graph_y + 1 ; cy ++)
+;Title_screen.c:109: for (cy = graph_y - 1 ; cy <= graph_y + 1 ; cy ++)
 	ld	a,(hl)
 	add	a,#0xFF
-	ldhl	sp,#6
+	ldhl	sp,#7
 	ld	(hl),a
 	ldhl	sp,#0
 	ld	a,(hl)
 	add	a,#0xFF
 	inc	hl
-	inc	hl
 	ld	(hl),a
 00110$:
-	ldhl	sp,#1
+	ldhl	sp,#2
 	ld	c,(hl)
 	ld	b,#0x00
 	inc	bc
 	inc	hl
-	inc	hl
 	ld	(hl),c
 	inc	hl
 	ld	(hl),b
-	inc	hl
-	inc	hl
+	ldhl	sp,#7
 	ld	b,(hl)
 	ld	c,#0x00
 	ldhl	sp,#3
@@ -440,15 +399,16 @@ _draw_cursor::
 	scf
 00137$:
 	jp	C,00112$
-;Title_screen.c:122: for (cx = graph_x - 1 ; cx <= graph_x + 1 ; cx++)
+;Title_screen.c:111: for (cx = graph_x - 1 ; cx <= graph_x + 1 ; cx++)
 	push	hl
-	ldhl	sp,#4
+	ldhl	sp,#3
 	ld	a,(hl+)
+	inc	hl
 	ld	(hl),a
 	pop	hl
-	ldhl	sp,#1
+	ldhl	sp,#2
 	ld	a,(hl)
-	ldhl	sp,#6
+	ldhl	sp,#7
 	sub	a, (hl)
 	jr	NZ,00138$
 	ld	a,#0x01
@@ -456,7 +416,7 @@ _draw_cursor::
 00138$:
 	xor	a,a
 00139$:
-	ldhl	sp,#5
+	ldhl	sp,#8
 	ld	(hl),a
 00108$:
 	ldhl	sp,#0
@@ -464,8 +424,8 @@ _draw_cursor::
 	ld	b,#0x00
 	inc	bc
 	ldhl	sp,#3
-	ld	a,(hl)
-	ldhl	sp,#7
+	ld	a,(hl+)
+	inc	hl
 	ld	(hl+),a
 	ld	(hl),#0x00
 	dec	hl
@@ -489,20 +449,20 @@ _draw_cursor::
 	scf
 00141$:
 	jr	C,00111$
-;Title_screen.c:124: if (cx == graph_x && cy == graph_y)
+;Title_screen.c:113: if (cx == graph_x && cy == graph_y)
 	ldhl	sp,#0
 	ld	a,(hl)
 	ldhl	sp,#3
 	sub	a, (hl)
 	jr	NZ,00102$
-	ldhl	sp,#5
+	ldhl	sp,#8
 	ld	a,(hl)
 	or	a, a
 	jr	NZ,00104$
-;Title_screen.c:125: continue ;
+;Title_screen.c:114: continue ;
 00102$:
-;Title_screen.c:126: gotoxy(cx, cy);
-	ldhl	sp,#6
+;Title_screen.c:115: gotoxy(cx, cy);
+	ldhl	sp,#7
 	ld	a,(hl)
 	push	af
 	inc	sp
@@ -512,7 +472,7 @@ _draw_cursor::
 	inc	sp
 	call	_gotoxy
 	add	sp, #2
-;Title_screen.c:127: setchar(cursor_char);
+;Title_screen.c:116: setchar(cursor_char);
 	ldhl	sp,#11
 	ld	a,(hl)
 	push	af
@@ -520,38 +480,38 @@ _draw_cursor::
 	call	_setchar
 	inc	sp
 00104$:
-;Title_screen.c:122: for (cx = graph_x - 1 ; cx <= graph_x + 1 ; cx++)
+;Title_screen.c:111: for (cx = graph_x - 1 ; cx <= graph_x + 1 ; cx++)
 	ldhl	sp,#3
 	inc	(hl)
 	jp	00108$
 00111$:
-;Title_screen.c:120: for (cy = graph_y - 1 ; cy <= graph_y + 1 ; cy ++)
-	ldhl	sp,#6
+;Title_screen.c:109: for (cy = graph_y - 1 ; cy <= graph_y + 1 ; cy ++)
+	ldhl	sp,#7
 	inc	(hl)
 	jp	00110$
 00112$:
 	add	sp, #9
 	ret
-;Title_screen.c:133: void	player_play(void)
+;Title_screen.c:122: void	player_play(void)
 ;	---------------------------------
 ; Function player_play
 ; ---------------------------------
 _player_play::
-;Title_screen.c:138: while (1)
+;Title_screen.c:127: while (1)
 00118$:
-;Title_screen.c:140: draw_cursor('/');
+;Title_screen.c:129: draw_cursor('/');
 	ld	a,#0x2F
 	push	af
 	inc	sp
 	call	_draw_cursor
 	inc	sp
-;Title_screen.c:141: key = waitpad(J_UP | J_DOWN | J_LEFT | J_RIGHT | J_A);
+;Title_screen.c:130: key = waitpad(J_UP | J_DOWN | J_LEFT | J_RIGHT | J_A);
 	ld	a,#0x1F
 	push	af
 	inc	sp
 	call	_waitpad
 	inc	sp
-;Title_screen.c:142: draw_cursor(' ');
+;Title_screen.c:131: draw_cursor(' ');
 	push	de
 	ld	a,#0x20
 	push	af
@@ -559,7 +519,7 @@ _player_play::
 	call	_draw_cursor
 	inc	sp
 	pop	de
-;Title_screen.c:144: if (key == J_UP && GAME_CURSOR_Y != 0)
+;Title_screen.c:133: if (key == J_UP && GAME_CURSOR_Y != 0)
 	ld	b,e
 	ld	c,#0x00
 	ld	a,b
@@ -572,10 +532,10 @@ _player_play::
 	ld	a,(hl)
 	or	a, a
 	jr	Z,00102$
-;Title_screen.c:145: GAME_CURSOR_Y--;
+;Title_screen.c:134: GAME_CURSOR_Y--;
 	dec	(hl)
 00102$:
-;Title_screen.c:146: if (key == J_DOWN && GAME_CURSOR_Y != 2)
+;Title_screen.c:135: if (key == J_DOWN && GAME_CURSOR_Y != 2)
 	ld	a,b
 	sub	a, #0x08
 	jr	NZ,00105$
@@ -586,11 +546,11 @@ _player_play::
 	ld	a,(hl)
 	sub	a, #0x02
 	jr	Z,00105$
-;Title_screen.c:147: GAME_CURSOR_Y++;
+;Title_screen.c:136: GAME_CURSOR_Y++;
 	ld	hl,#_GAME_CURSOR_Y
 	inc	(hl)
 00105$:
-;Title_screen.c:148: if (key == J_LEFT && GAME_CURSOR_X != 0)
+;Title_screen.c:137: if (key == J_LEFT && GAME_CURSOR_X != 0)
 	ld	a,b
 	sub	a, #0x02
 	jr	NZ,00108$
@@ -601,10 +561,10 @@ _player_play::
 	ld	a,(hl)
 	or	a, a
 	jr	Z,00108$
-;Title_screen.c:149: GAME_CURSOR_X--;
+;Title_screen.c:138: GAME_CURSOR_X--;
 	dec	(hl)
 00108$:
-;Title_screen.c:150: if (key == J_RIGHT && GAME_CURSOR_X != 2)
+;Title_screen.c:139: if (key == J_RIGHT && GAME_CURSOR_X != 2)
 	ld	a,b
 	dec	a
 	jr	NZ,00111$
@@ -615,18 +575,18 @@ _player_play::
 	ld	a,(hl)
 	sub	a, #0x02
 	jr	Z,00111$
-;Title_screen.c:151: GAME_CURSOR_X++;
+;Title_screen.c:140: GAME_CURSOR_X++;
 	ld	hl,#_GAME_CURSOR_X
 	inc	(hl)
 00111$:
-;Title_screen.c:152: if (key == J_A)
+;Title_screen.c:141: if (key == J_A)
 	ld	a,b
 	sub	a, #0x10
 	jr	NZ,00116$
 	ld	a,c
 	or	a, a
 	jr	NZ,00116$
-;Title_screen.c:154: i = coord_2d_to_1d(GAME_CURSOR_X, GAME_CURSOR_Y);
+;Title_screen.c:143: i = coord_2d_to_1d(GAME_CURSOR_X, GAME_CURSOR_Y);
 	ld	hl,#_GAME_CURSOR_Y
 	ld	a,(hl)
 	push	af
@@ -638,7 +598,7 @@ _player_play::
 	call	_coord_2d_to_1d
 	add	sp, #2
 	ld	b,e
-;Title_screen.c:155: if (GAME_BOARD[i] == EMPTY)
+;Title_screen.c:144: if (GAME_BOARD[i] == EMPTY)
 	ld	a,#<(_GAME_BOARD)
 	add	a, b
 	ld	c,a
@@ -648,41 +608,405 @@ _player_play::
 	ld	a,(bc)
 	sub	a, #0x20
 	jr	NZ,00116$
-;Title_screen.c:157: GAME_BOARD[i] = PLAYER;
+;Title_screen.c:146: GAME_BOARD[i] = PLAYER;
 	ld	a,#0x78
 	ld	(bc),a
-;Title_screen.c:158: break ;
+;Title_screen.c:147: break ;
 	ret
 00116$:
-;Title_screen.c:161: waitpadup();
+;Title_screen.c:150: waitpadup();
 	call	_waitpadup
 	jp	00118$
 	ret
-;Title_screen.c:165: void	game(void)
+;Title_screen.c:154: void	player2_play(void)
+;	---------------------------------
+; Function player2_play
+; ---------------------------------
+_player2_play::
+;Title_screen.c:159: while (1)
+00118$:
+;Title_screen.c:161: draw_cursor('/');
+	ld	a,#0x2F
+	push	af
+	inc	sp
+	call	_draw_cursor
+	inc	sp
+;Title_screen.c:162: key = waitpad(J_UP | J_DOWN | J_LEFT | J_RIGHT | J_A);
+	ld	a,#0x1F
+	push	af
+	inc	sp
+	call	_waitpad
+	inc	sp
+;Title_screen.c:163: draw_cursor(' ');
+	push	de
+	ld	a,#0x20
+	push	af
+	inc	sp
+	call	_draw_cursor
+	inc	sp
+	pop	de
+;Title_screen.c:165: if (key == J_UP && GAME_CURSOR_Y != 0)
+	ld	b,e
+	ld	c,#0x00
+	ld	a,b
+	sub	a, #0x04
+	jr	NZ,00102$
+	ld	a,c
+	or	a, a
+	jr	NZ,00102$
+	ld	hl,#_GAME_CURSOR_Y
+	ld	a,(hl)
+	or	a, a
+	jr	Z,00102$
+;Title_screen.c:166: GAME_CURSOR_Y--;
+	dec	(hl)
+00102$:
+;Title_screen.c:167: if (key == J_DOWN && GAME_CURSOR_Y != 2)
+	ld	a,b
+	sub	a, #0x08
+	jr	NZ,00105$
+	ld	a,c
+	or	a, a
+	jr	NZ,00105$
+	ld	hl,#_GAME_CURSOR_Y
+	ld	a,(hl)
+	sub	a, #0x02
+	jr	Z,00105$
+;Title_screen.c:168: GAME_CURSOR_Y++;
+	ld	hl,#_GAME_CURSOR_Y
+	inc	(hl)
+00105$:
+;Title_screen.c:169: if (key == J_LEFT && GAME_CURSOR_X != 0)
+	ld	a,b
+	sub	a, #0x02
+	jr	NZ,00108$
+	ld	a,c
+	or	a, a
+	jr	NZ,00108$
+	ld	hl,#_GAME_CURSOR_X
+	ld	a,(hl)
+	or	a, a
+	jr	Z,00108$
+;Title_screen.c:170: GAME_CURSOR_X--;
+	dec	(hl)
+00108$:
+;Title_screen.c:171: if (key == J_RIGHT && GAME_CURSOR_X != 2)
+	ld	a,b
+	dec	a
+	jr	NZ,00111$
+	ld	a,c
+	or	a, a
+	jr	NZ,00111$
+	ld	hl,#_GAME_CURSOR_X
+	ld	a,(hl)
+	sub	a, #0x02
+	jr	Z,00111$
+;Title_screen.c:172: GAME_CURSOR_X++;
+	ld	hl,#_GAME_CURSOR_X
+	inc	(hl)
+00111$:
+;Title_screen.c:173: if (key == J_A)
+	ld	a,b
+	sub	a, #0x10
+	jr	NZ,00116$
+	ld	a,c
+	or	a, a
+	jr	NZ,00116$
+;Title_screen.c:175: i = coord_2d_to_1d(GAME_CURSOR_X, GAME_CURSOR_Y);
+	ld	hl,#_GAME_CURSOR_Y
+	ld	a,(hl)
+	push	af
+	inc	sp
+	ld	hl,#_GAME_CURSOR_X
+	ld	a,(hl)
+	push	af
+	inc	sp
+	call	_coord_2d_to_1d
+	add	sp, #2
+	ld	b,e
+;Title_screen.c:176: if (GAME_BOARD[i] == EMPTY)
+	ld	a,#<(_GAME_BOARD)
+	add	a, b
+	ld	c,a
+	ld	a,#>(_GAME_BOARD)
+	adc	a, #0x00
+	ld	b,a
+	ld	a,(bc)
+	sub	a, #0x20
+	jr	NZ,00116$
+;Title_screen.c:178: GAME_BOARD[i] = PLAYER2;
+	ld	a,#0x6F
+	ld	(bc),a
+;Title_screen.c:179: break ;
+	ret
+00116$:
+;Title_screen.c:182: waitpadup();
+	call	_waitpadup
+	jp	00118$
+	ret
+;Title_screen.c:186: void	game(void)
 ;	---------------------------------
 ; Function game
 ; ---------------------------------
 _game::
-;Title_screen.c:167: init();
+;Title_screen.c:188: init();
 	call	_init
-;Title_screen.c:168: draw_board();
+;Title_screen.c:189: draw_board();
 	call	_draw_board
-;Title_screen.c:169: while(1)
+;Title_screen.c:190: while(1)
 00102$:
-;Title_screen.c:171: player_play();
+;Title_screen.c:192: player_play();
 	call	_player_play
-;Title_screen.c:172: update();
+;Title_screen.c:193: update();
+	call	_update
+;Title_screen.c:194: player2_play();
+	call	_player2_play
+;Title_screen.c:195: update();
 	call	_update
 	jr	00102$
 	ret
-;Title_screen.c:175: void	main(void)
+;Title_screen.c:199: void	title_screen()
+;	---------------------------------
+; Function title_screen
+; ---------------------------------
+_title_screen::
+;Title_screen.c:201: clear_screen();
+	call	_clear_screen
+;Title_screen.c:202: gotoxy(4, 5);
+	ld	hl,#0x0504
+	push	hl
+	call	_gotoxy
+	add	sp, #2
+;Title_screen.c:203: printf("Tic Tac Toe !");
+	ld	de,#___str_4
+	push	de
+	call	_printf
+	add	sp, #2
+;Title_screen.c:204: gotoxy(3, 15);
+	ld	hl,#0x0F03
+	push	hl
+	call	_gotoxy
+	add	sp, #2
+;Title_screen.c:205: printf("- PRESS START -");
+	ld	de,#___str_5
+	push	de
+	call	_printf
+	add	sp, #2
+;Title_screen.c:206: waitpad(J_START);
+	ld	a,#0x80
+	push	af
+	inc	sp
+	call	_waitpad
+	inc	sp
+;Title_screen.c:207: waitpadup();
+	jp	_waitpadup
+___str_4:
+	.ascii "Tic Tac Toe !"
+	.db 0x00
+___str_5:
+	.ascii "- PRESS START -"
+	.db 0x00
+;Title_screen.c:210: void	mode_screen(UINT8 y)
+;	---------------------------------
+; Function mode_screen
+; ---------------------------------
+_mode_screen::
+;Title_screen.c:212: clear_screen();
+	call	_clear_screen
+;Title_screen.c:213: gotoxy(3, 5 + y);
+	ldhl	sp,#2
+	ld	a,(hl)
+	add	a, #0x05
+	push	af
+	inc	sp
+	ld	a,#0x03
+	push	af
+	inc	sp
+	call	_gotoxy
+	add	sp, #2
+;Title_screen.c:214: setchar('>');
+	ld	a,#0x3E
+	push	af
+	inc	sp
+	call	_setchar
+	inc	sp
+;Title_screen.c:215: gotoxy(4, 5);
+	ld	hl,#0x0504
+	push	hl
+	call	_gotoxy
+	add	sp, #2
+;Title_screen.c:216: printf("1 Player");
+	ld	de,#___str_6
+	push	de
+	call	_printf
+	add	sp, #2
+;Title_screen.c:217: gotoxy(4, 6);
+	ld	hl,#0x0604
+	push	hl
+	call	_gotoxy
+	add	sp, #2
+;Title_screen.c:218: printf("2 Players");
+	ld	de,#___str_7
+	push	de
+	call	_printf
+	add	sp, #2
+;Title_screen.c:219: gotoxy(4, 7);
+	ld	hl,#0x0704
+	push	hl
+	call	_gotoxy
+	add	sp, #2
+;Title_screen.c:220: printf("Return");
+	ld	de,#___str_8
+	push	de
+	call	_printf
+	add	sp, #2
+	ret
+___str_6:
+	.ascii "1 Player"
+	.db 0x00
+___str_7:
+	.ascii "2 Players"
+	.db 0x00
+___str_8:
+	.ascii "Return"
+	.db 0x00
+;Title_screen.c:223: void	select_mode()
+;	---------------------------------
+; Function select_mode
+; ---------------------------------
+_select_mode::
+	add	sp, #-2
+;Title_screen.c:228: mode = 0;
+	ld	b,#0x00
+;Title_screen.c:229: while (1)
+00116$:
+;Title_screen.c:231: mode_screen(mode);
+	push	bc
+	push	bc
+	inc	sp
+	call	_mode_screen
+	inc	sp
+	pop	bc
+;Title_screen.c:232: key = waitpad(J_A | J_B | J_UP | J_DOWN);
+	push	bc
+	ld	a,#0x3C
+	push	af
+	inc	sp
+	call	_waitpad
+	inc	sp
+	pop	bc
+;Title_screen.c:233: if (key == J_B)
+	ldhl	sp,#0
+	ld	(hl),e
+	inc	hl
+	ld	(hl),#0x00
+	dec	hl
+	ld	a,(hl)
+	sub	a, #0x20
+	jr	NZ,00102$
+	inc	hl
+	ld	a,(hl)
+	or	a, a
+	jr	NZ,00102$
+;Title_screen.c:235: title_screen();
+	call	_title_screen
+;Title_screen.c:236: return ;
+	jp	00118$
+00102$:
+;Title_screen.c:238: if (key == J_DOWN && mode != 2)
+	ldhl	sp,#0
+	ld	a,(hl)
+	sub	a, #0x08
+	jr	NZ,00104$
+	inc	hl
+	ld	a,(hl)
+	or	a, a
+	jr	NZ,00104$
+	ld	a,b
+	sub	a, #0x02
+	jr	Z,00104$
+;Title_screen.c:240: mode++;
+	inc	b
+;Title_screen.c:241: mode_screen(mode);
+	push	bc
+	push	bc
+	inc	sp
+	call	_mode_screen
+	inc	sp
+	pop	bc
+00104$:
+;Title_screen.c:243: if (key == J_UP && mode != 0)
+	ldhl	sp,#0
+	ld	a,(hl)
+	sub	a, #0x04
+	jr	NZ,00107$
+	inc	hl
+	ld	a,(hl)
+	or	a, a
+	jr	NZ,00107$
+	ld	a,b
+	or	a, a
+	jr	Z,00107$
+;Title_screen.c:245: mode--;
+	dec	b
+;Title_screen.c:246: mode_screen(mode);
+	push	bc
+	push	bc
+	inc	sp
+	call	_mode_screen
+	inc	sp
+	pop	bc
+00107$:
+;Title_screen.c:248: if (key == J_A)
+	ldhl	sp,#0
+	ld	a,(hl)
+	sub	a, #0x10
+	jp	NZ,00116$
+	inc	hl
+	ld	a,(hl)
+	or	a, a
+	jp	NZ,00116$
+;Title_screen.c:250: switch (mode)
+	ld	a,#0x02
+	sub	a, b
+	jp	C,00116$
+	ld	e,b
+	ld	d,#0x00
+	ld	hl,#00161$
+	add	hl,de
+	add	hl,de
+;Title_screen.c:252: case 0:
+	jp	(hl)
+00161$:
+	jr	00109$
+	jr	00110$
+	jr	00111$
+00109$:
+;Title_screen.c:253: game();
+	call	_game
+;Title_screen.c:254: case 1:
+00110$:
+;Title_screen.c:255: game();
+	call	_game
+;Title_screen.c:256: case 2:
+00111$:
+;Title_screen.c:257: return ;
+;Title_screen.c:258: }
+00118$:
+	add	sp, #2
+	ret
+;Title_screen.c:263: void	main(void)
 ;	---------------------------------
 ; Function main
 ; ---------------------------------
 _main::
-;Title_screen.c:177: title_screen();
+;Title_screen.c:265: while (1)
+00102$:
+;Title_screen.c:267: title_screen();
 	call	_title_screen
-;Title_screen.c:178: game();
-	jp	_game
+;Title_screen.c:268: select_mode();
+	call	_select_mode
+	jr	00102$
+	ret
 	.area _CODE
 	.area _CABS (ABS)

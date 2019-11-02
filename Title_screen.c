@@ -6,7 +6,7 @@
 /*   By: vdescham <vdescham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/02 13:58:21 by vdescham          #+#    #+#             */
-/*   Updated: 2019/11/02 17:10:59 by vdescham         ###   ########.fr       */
+/*   Updated: 2019/11/02 18:49:55 by vdescham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 #define EMPTY		' '
 #define PLAYER		'x'
-#define COMPUTER	'o'
+#define PLAYER2		'o'
 
 UINT8 GAME_BOARD[9];
 UINT8 GAME_CURSOR_X;
@@ -42,17 +42,6 @@ void	clear_screen(void)
 UINT8	coord_2d_to_1d(UINT8 x, UINT8 y)
 {
 	return y * 3 + x;
-}
-
-void	title_screen()
-{
-	clear_screen();
-	gotoxy(4, 5);
-	printf("Tic Tac Toe !");
-	gotoxy(3, 15);
-	printf("- PRESS START -");
-	waitpad(J_START);
-	waitpadup();
 }
 
 void	init(void)
@@ -162,6 +151,38 @@ void	player_play(void)
 	}
 }
 
+void	player2_play(void)
+{
+	UINT8 key;
+	UINT8 i;
+
+	while (1)
+	{
+		draw_cursor('/');
+		key = waitpad(J_UP | J_DOWN | J_LEFT | J_RIGHT | J_A);
+		draw_cursor(' ');
+
+		if (key == J_UP && GAME_CURSOR_Y != 0)
+			GAME_CURSOR_Y--;
+		if (key == J_DOWN && GAME_CURSOR_Y != 2)
+			GAME_CURSOR_Y++;
+		if (key == J_LEFT && GAME_CURSOR_X != 0)
+			GAME_CURSOR_X--;
+		if (key == J_RIGHT && GAME_CURSOR_X != 2)
+			GAME_CURSOR_X++;
+		if (key == J_A)
+		{
+			i = coord_2d_to_1d(GAME_CURSOR_X, GAME_CURSOR_Y);
+			if (GAME_BOARD[i] == EMPTY)
+			{
+				GAME_BOARD[i] = PLAYER2;
+				break ;
+			}
+		}
+		waitpadup();
+	}
+}
+
 void	game(void)
 {
 	init();
@@ -170,10 +191,80 @@ void	game(void)
 	{
 		player_play();
 		update();
+		player2_play();
+		update();
 	}
 }
+
+void	title_screen()
+{
+	clear_screen();
+	gotoxy(4, 5);
+	printf("Tic Tac Toe !");
+	gotoxy(3, 15);
+	printf("- PRESS START -");
+	waitpad(J_START);
+	waitpadup();
+}
+
+void	mode_screen(UINT8 y)
+{
+	clear_screen();
+	gotoxy(3, 5 + y);
+	setchar('>');
+	gotoxy(4, 5);
+	printf("1 Player");
+	gotoxy(4, 6);
+	printf("2 Players");
+	gotoxy(4, 7);
+	printf("Return");
+}
+
+void	select_mode()
+{
+	UINT8 key;
+	UINT8 mode;
+
+	mode = 0;
+	while (1)
+	{
+		mode_screen(mode);
+		key = waitpad(J_A | J_B | J_UP | J_DOWN);
+		if (key == J_B)
+		{
+			title_screen();
+			return ;
+		}
+		if (key == J_DOWN && mode != 2)
+		{
+			mode++;
+			mode_screen(mode);
+		}
+		if (key == J_UP && mode != 0)
+		{
+			mode--;
+			mode_screen(mode);
+		}
+		if (key == J_A)
+		{
+			switch (mode)
+			{
+				case 0:
+					game();
+				case 1:
+					game();
+				case 2:
+					return ;
+			}
+		}
+	}
+}
+
 void	main(void)
 {
-	title_screen();
-	game();
+	while (1)
+	{
+		title_screen();
+		select_mode();
+	}
 }
