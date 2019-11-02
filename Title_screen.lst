@@ -1,7 +1,7 @@
                               1 ;--------------------------------------------------------
                               2 ; File Created by SDCC : free open source ANSI-C Compiler
                               3 ; Version 3.5.0 #9253 (Apr  3 2018) (Linux)
-                              4 ; This file was generated Sat Nov  2 18:49:56 2019
+                              4 ; This file was generated Sat Nov  2 18:58:13 2019
                               5 ;--------------------------------------------------------
                               6 	.module Title_screen
                               7 	.optsdcc -mgbz80
@@ -822,204 +822,258 @@
                             811 ; Function mode_screen
                             812 ; ---------------------------------
    03ED                     813 _mode_screen::
-                            814 ;Title_screen.c:212: clear_screen();
-   03ED CDr00r00            815 	call	_clear_screen
-                            816 ;Title_screen.c:213: gotoxy(3, 5 + y);
-   03F0 F8 02               817 	ldhl	sp,#2
-   03F2 7E                  818 	ld	a,(hl)
-   03F3 C6 05               819 	add	a, #0x05
-   03F5 F5                  820 	push	af
-   03F6 33                  821 	inc	sp
-   03F7 3E 03               822 	ld	a,#0x03
-   03F9 F5                  823 	push	af
-   03FA 33                  824 	inc	sp
-   03FB CDr00r00            825 	call	_gotoxy
-   03FE E8 02               826 	add	sp, #2
-                            827 ;Title_screen.c:214: setchar('>');
-   0400 3E 3E               828 	ld	a,#0x3E
-   0402 F5                  829 	push	af
-   0403 33                  830 	inc	sp
-   0404 CDr00r00            831 	call	_setchar
-   0407 33                  832 	inc	sp
-                            833 ;Title_screen.c:215: gotoxy(4, 5);
-   0408 21 04 05            834 	ld	hl,#0x0504
-   040B E5                  835 	push	hl
-   040C CDr00r00            836 	call	_gotoxy
-   040F E8 02               837 	add	sp, #2
-                            838 ;Title_screen.c:216: printf("1 Player");
-   0411 11r3Fr04            839 	ld	de,#___str_6
-   0414 D5                  840 	push	de
-   0415 CDr00r00            841 	call	_printf
-   0418 E8 02               842 	add	sp, #2
-                            843 ;Title_screen.c:217: gotoxy(4, 6);
-   041A 21 04 06            844 	ld	hl,#0x0604
-   041D E5                  845 	push	hl
-   041E CDr00r00            846 	call	_gotoxy
-   0421 E8 02               847 	add	sp, #2
-                            848 ;Title_screen.c:218: printf("2 Players");
-   0423 11r48r04            849 	ld	de,#___str_7
-   0426 D5                  850 	push	de
-   0427 CDr00r00            851 	call	_printf
-   042A E8 02               852 	add	sp, #2
-                            853 ;Title_screen.c:219: gotoxy(4, 7);
-   042C 21 04 07            854 	ld	hl,#0x0704
-   042F E5                  855 	push	hl
-   0430 CDr00r00            856 	call	_gotoxy
-   0433 E8 02               857 	add	sp, #2
-                            858 ;Title_screen.c:220: printf("Return");
-   0435 11r52r04            859 	ld	de,#___str_8
-   0438 D5                  860 	push	de
-   0439 CDr00r00            861 	call	_printf
-   043C E8 02               862 	add	sp, #2
-   043E C9                  863 	ret
-   043F                     864 ___str_6:
-   043F 31 20 50 6C 61 79   865 	.ascii "1 Player"
+                            814 ;Title_screen.c:212: gotoxy(3, 7);
+   03ED 21 03 07            815 	ld	hl,#0x0703
+   03F0 E5                  816 	push	hl
+   03F1 CDr00r00            817 	call	_gotoxy
+   03F4 E8 02               818 	add	sp, #2
+                            819 ;Title_screen.c:213: setchar(' ');
+   03F6 3E 20               820 	ld	a,#0x20
+   03F8 F5                  821 	push	af
+   03F9 33                  822 	inc	sp
+   03FA CDr00r00            823 	call	_setchar
+   03FD 33                  824 	inc	sp
+                            825 ;Title_screen.c:214: gotoxy(3, 8);
+   03FE 21 03 08            826 	ld	hl,#0x0803
+   0401 E5                  827 	push	hl
+   0402 CDr00r00            828 	call	_gotoxy
+   0405 E8 02               829 	add	sp, #2
+                            830 ;Title_screen.c:215: setchar(' ');
+   0407 3E 20               831 	ld	a,#0x20
+   0409 F5                  832 	push	af
+   040A 33                  833 	inc	sp
+   040B CDr00r00            834 	call	_setchar
+   040E 33                  835 	inc	sp
+                            836 ;Title_screen.c:216: gotoxy(3, 9);
+   040F 21 03 09            837 	ld	hl,#0x0903
+   0412 E5                  838 	push	hl
+   0413 CDr00r00            839 	call	_gotoxy
+   0416 E8 02               840 	add	sp, #2
+                            841 ;Title_screen.c:217: setchar(' ');
+   0418 3E 20               842 	ld	a,#0x20
+   041A F5                  843 	push	af
+   041B 33                  844 	inc	sp
+   041C CDr00r00            845 	call	_setchar
+   041F 33                  846 	inc	sp
+                            847 ;Title_screen.c:218: gotoxy(3, 7 + y);
+   0420 F8 02               848 	ldhl	sp,#2
+   0422 7E                  849 	ld	a,(hl)
+   0423 C6 07               850 	add	a, #0x07
+   0425 F5                  851 	push	af
+   0426 33                  852 	inc	sp
+   0427 3E 03               853 	ld	a,#0x03
+   0429 F5                  854 	push	af
+   042A 33                  855 	inc	sp
+   042B CDr00r00            856 	call	_gotoxy
+   042E E8 02               857 	add	sp, #2
+                            858 ;Title_screen.c:219: setchar('>');
+   0430 3E 3E               859 	ld	a,#0x3E
+   0432 F5                  860 	push	af
+   0433 33                  861 	inc	sp
+   0434 CDr00r00            862 	call	_setchar
+   0437 33                  863 	inc	sp
+   0438 C9                  864 	ret
+                            865 ;Title_screen.c:222: void	select_mode()
+                            866 ;	---------------------------------
+                            867 ; Function select_mode
+                            868 ; ---------------------------------
+   0439                     869 _select_mode::
+   0439 E8 FE               870 	add	sp, #-2
+                            871 ;Title_screen.c:227: clear_screen();
+   043B CDr00r00            872 	call	_clear_screen
+                            873 ;Title_screen.c:228: gotoxy(3, 5);
+   043E 21 03 05            874 	ld	hl,#0x0503
+   0441 E5                  875 	push	hl
+   0442 CDr00r00            876 	call	_gotoxy
+   0445 E8 02               877 	add	sp, #2
+                            878 ;Title_screen.c:229: printf("Select a mode :");
+   0447 11r17r05            879 	ld	de,#___str_6
+   044A D5                  880 	push	de
+   044B CDr00r00            881 	call	_printf
+   044E E8 02               882 	add	sp, #2
+                            883 ;Title_screen.c:230: gotoxy(4, 7);
+   0450 21 04 07            884 	ld	hl,#0x0704
+   0453 E5                  885 	push	hl
+   0454 CDr00r00            886 	call	_gotoxy
+   0457 E8 02               887 	add	sp, #2
+                            888 ;Title_screen.c:231: printf("1 Player");
+   0459 11r27r05            889 	ld	de,#___str_7
+   045C D5                  890 	push	de
+   045D CDr00r00            891 	call	_printf
+   0460 E8 02               892 	add	sp, #2
+                            893 ;Title_screen.c:232: gotoxy(4, 8);
+   0462 21 04 08            894 	ld	hl,#0x0804
+   0465 E5                  895 	push	hl
+   0466 CDr00r00            896 	call	_gotoxy
+   0469 E8 02               897 	add	sp, #2
+                            898 ;Title_screen.c:233: printf("2 Players");
+   046B 11r30r05            899 	ld	de,#___str_8
+   046E D5                  900 	push	de
+   046F CDr00r00            901 	call	_printf
+   0472 E8 02               902 	add	sp, #2
+                            903 ;Title_screen.c:234: gotoxy(4, 9);
+   0474 21 04 09            904 	ld	hl,#0x0904
+   0477 E5                  905 	push	hl
+   0478 CDr00r00            906 	call	_gotoxy
+   047B E8 02               907 	add	sp, #2
+                            908 ;Title_screen.c:235: printf("Return");
+   047D 11r3Ar05            909 	ld	de,#___str_9
+   0480 D5                  910 	push	de
+   0481 CDr00r00            911 	call	_printf
+   0484 E8 02               912 	add	sp, #2
+                            913 ;Title_screen.c:237: mode = 0;
+   0486 06 00               914 	ld	b,#0x00
+                            915 ;Title_screen.c:238: while (1)
+   0488                     916 00116$:
+                            917 ;Title_screen.c:240: mode_screen(mode);
+   0488 C5                  918 	push	bc
+   0489 C5                  919 	push	bc
+   048A 33                  920 	inc	sp
+   048B CDrEDr03            921 	call	_mode_screen
+   048E 33                  922 	inc	sp
+   048F C1                  923 	pop	bc
+                            924 ;Title_screen.c:241: key = waitpad(J_A | J_B | J_UP | J_DOWN);
+   0490 C5                  925 	push	bc
+   0491 3E 3C               926 	ld	a,#0x3C
+   0493 F5                  927 	push	af
+   0494 33                  928 	inc	sp
+   0495 CDr00r00            929 	call	_waitpad
+   0498 33                  930 	inc	sp
+   0499 C1                  931 	pop	bc
+                            932 ;Title_screen.c:242: if (key == J_B)
+   049A F8 00               933 	ldhl	sp,#0
+   049C 73                  934 	ld	(hl),e
+   049D 23                  935 	inc	hl
+   049E 36 00               936 	ld	(hl),#0x00
+   04A0 2B                  937 	dec	hl
+   04A1 7E                  938 	ld	a,(hl)
+   04A2 D6 20               939 	sub	a, #0x20
+   04A4 20 0B               940 	jr	NZ,00102$
+   04A6 23                  941 	inc	hl
+   04A7 7E                  942 	ld	a,(hl)
+   04A8 B7                  943 	or	a, a
+   04A9 20 06               944 	jr	NZ,00102$
+                            945 ;Title_screen.c:244: title_screen();
+   04AB CDr9Dr03            946 	call	_title_screen
+                            947 ;Title_screen.c:245: return ;
+   04AE C3r14r05            948 	jp	00118$
+   04B1                     949 00102$:
+                            950 ;Title_screen.c:247: if (key == J_DOWN && mode != 2)
+   04B1 F8 00               951 	ldhl	sp,#0
+   04B3 7E                  952 	ld	a,(hl)
+   04B4 D6 08               953 	sub	a, #0x08
+   04B6 20 13               954 	jr	NZ,00104$
+   04B8 23                  955 	inc	hl
+   04B9 7E                  956 	ld	a,(hl)
+   04BA B7                  957 	or	a, a
+   04BB 20 0E               958 	jr	NZ,00104$
+   04BD 78                  959 	ld	a,b
+   04BE D6 02               960 	sub	a, #0x02
+   04C0 28 09               961 	jr	Z,00104$
+                            962 ;Title_screen.c:249: mode++;
+   04C2 04                  963 	inc	b
+                            964 ;Title_screen.c:250: mode_screen(mode);
+   04C3 C5                  965 	push	bc
+   04C4 C5                  966 	push	bc
+   04C5 33                  967 	inc	sp
+   04C6 CDrEDr03            968 	call	_mode_screen
+   04C9 33                  969 	inc	sp
+   04CA C1                  970 	pop	bc
+   04CB                     971 00104$:
+                            972 ;Title_screen.c:252: if (key == J_UP && mode != 0)
+   04CB F8 00               973 	ldhl	sp,#0
+   04CD 7E                  974 	ld	a,(hl)
+   04CE D6 04               975 	sub	a, #0x04
+   04D0 20 12               976 	jr	NZ,00107$
+   04D2 23                  977 	inc	hl
+   04D3 7E                  978 	ld	a,(hl)
+   04D4 B7                  979 	or	a, a
+   04D5 20 0D               980 	jr	NZ,00107$
+   04D7 78                  981 	ld	a,b
+   04D8 B7                  982 	or	a, a
+   04D9 28 09               983 	jr	Z,00107$
+                            984 ;Title_screen.c:254: mode--;
+   04DB 05                  985 	dec	b
+                            986 ;Title_screen.c:255: mode_screen(mode);
+   04DC C5                  987 	push	bc
+   04DD C5                  988 	push	bc
+   04DE 33                  989 	inc	sp
+   04DF CDrEDr03            990 	call	_mode_screen
+   04E2 33                  991 	inc	sp
+   04E3 C1                  992 	pop	bc
+   04E4                     993 00107$:
+                            994 ;Title_screen.c:257: if (key == J_A)
+   04E4 F8 00               995 	ldhl	sp,#0
+   04E6 7E                  996 	ld	a,(hl)
+   04E7 D6 10               997 	sub	a, #0x10
+   04E9 20 21               998 	jr	NZ,00114$
+   04EB 23                  999 	inc	hl
+   04EC 7E                 1000 	ld	a,(hl)
+   04ED B7                 1001 	or	a, a
+   04EE 20 1C              1002 	jr	NZ,00114$
+                           1003 ;Title_screen.c:259: switch (mode)
+   04F0 3E 02              1004 	ld	a,#0x02
+   04F2 90                 1005 	sub	a, b
+   04F3 38 17              1006 	jr	C,00114$
+   04F5 58                 1007 	ld	e,b
+   04F6 16 00              1008 	ld	d,#0x00
+   04F8 21rFEr04           1009 	ld	hl,#00161$
+   04FB 19                 1010 	add	hl,de
+   04FC 19                 1011 	add	hl,de
+                           1012 ;Title_screen.c:261: case 0:
+   04FD E9                 1013 	jp	(hl)
+   04FE                    1014 00161$:
+   04FE 18 04              1015 	jr	00109$
+   0500 18 05              1016 	jr	00110$
+   0502 18 10              1017 	jr	00118$
+   0504                    1018 00109$:
+                           1019 ;Title_screen.c:262: game();
+   0504 CDr88r03           1020 	call	_game
+                           1021 ;Title_screen.c:263: case 1:
+   0507                    1022 00110$:
+                           1023 ;Title_screen.c:264: game();
+   0507 CDr88r03           1024 	call	_game
+                           1025 ;Title_screen.c:265: case 2:
+                           1026 ;Title_screen.c:266: return ;
+   050A 18 08              1027 	jr	00118$
+                           1028 ;Title_screen.c:267: }
+   050C                    1029 00114$:
+                           1030 ;Title_screen.c:269: waitpadup();
+   050C C5                 1031 	push	bc
+   050D CDr00r00           1032 	call	_waitpadup
+   0510 C1                 1033 	pop	bc
+   0511 C3r88r04           1034 	jp	00116$
+   0514                    1035 00118$:
+   0514 E8 02              1036 	add	sp, #2
+   0516 C9                 1037 	ret
+   0517                    1038 ___str_6:
+   0517 53 65 6C 65 63 74  1039 	.ascii "Select a mode :"
+        20 61 20 6D 6F 64
+        65 20 3A
+   0526 00                 1040 	.db 0x00
+   0527                    1041 ___str_7:
+   0527 31 20 50 6C 61 79  1042 	.ascii "1 Player"
         65 72
-   0447 00                  866 	.db 0x00
-   0448                     867 ___str_7:
-   0448 32 20 50 6C 61 79   868 	.ascii "2 Players"
+   052F 00                 1043 	.db 0x00
+   0530                    1044 ___str_8:
+   0530 32 20 50 6C 61 79  1045 	.ascii "2 Players"
         65 72 73
-   0451 00                  869 	.db 0x00
-   0452                     870 ___str_8:
-   0452 52 65 74 75 72 6E   871 	.ascii "Return"
-   0458 00                  872 	.db 0x00
-                            873 ;Title_screen.c:223: void	select_mode()
-                            874 ;	---------------------------------
-                            875 ; Function select_mode
-                            876 ; ---------------------------------
-   0459                     877 _select_mode::
-   0459 E8 FE               878 	add	sp, #-2
-                            879 ;Title_screen.c:228: mode = 0;
-   045B 06 00               880 	ld	b,#0x00
-                            881 ;Title_screen.c:229: while (1)
-   045D                     882 00116$:
-                            883 ;Title_screen.c:231: mode_screen(mode);
-   045D C5                  884 	push	bc
-   045E C5                  885 	push	bc
-   045F 33                  886 	inc	sp
-   0460 CDrEDr03            887 	call	_mode_screen
-   0463 33                  888 	inc	sp
-   0464 C1                  889 	pop	bc
-                            890 ;Title_screen.c:232: key = waitpad(J_A | J_B | J_UP | J_DOWN);
-   0465 C5                  891 	push	bc
-   0466 3E 3C               892 	ld	a,#0x3C
-   0468 F5                  893 	push	af
-   0469 33                  894 	inc	sp
-   046A CDr00r00            895 	call	_waitpad
-   046D 33                  896 	inc	sp
-   046E C1                  897 	pop	bc
-                            898 ;Title_screen.c:233: if (key == J_B)
-   046F F8 00               899 	ldhl	sp,#0
-   0471 73                  900 	ld	(hl),e
-   0472 23                  901 	inc	hl
-   0473 36 00               902 	ld	(hl),#0x00
-   0475 2B                  903 	dec	hl
-   0476 7E                  904 	ld	a,(hl)
-   0477 D6 20               905 	sub	a, #0x20
-   0479 20 0B               906 	jr	NZ,00102$
-   047B 23                  907 	inc	hl
-   047C 7E                  908 	ld	a,(hl)
-   047D B7                  909 	or	a, a
-   047E 20 06               910 	jr	NZ,00102$
-                            911 ;Title_screen.c:235: title_screen();
-   0480 CDr9Dr03            912 	call	_title_screen
-                            913 ;Title_screen.c:236: return ;
-   0483 C3rE2r04            914 	jp	00118$
-   0486                     915 00102$:
-                            916 ;Title_screen.c:238: if (key == J_DOWN && mode != 2)
-   0486 F8 00               917 	ldhl	sp,#0
-   0488 7E                  918 	ld	a,(hl)
-   0489 D6 08               919 	sub	a, #0x08
-   048B 20 13               920 	jr	NZ,00104$
-   048D 23                  921 	inc	hl
-   048E 7E                  922 	ld	a,(hl)
-   048F B7                  923 	or	a, a
-   0490 20 0E               924 	jr	NZ,00104$
-   0492 78                  925 	ld	a,b
-   0493 D6 02               926 	sub	a, #0x02
-   0495 28 09               927 	jr	Z,00104$
-                            928 ;Title_screen.c:240: mode++;
-   0497 04                  929 	inc	b
-                            930 ;Title_screen.c:241: mode_screen(mode);
-   0498 C5                  931 	push	bc
-   0499 C5                  932 	push	bc
-   049A 33                  933 	inc	sp
-   049B CDrEDr03            934 	call	_mode_screen
-   049E 33                  935 	inc	sp
-   049F C1                  936 	pop	bc
-   04A0                     937 00104$:
-                            938 ;Title_screen.c:243: if (key == J_UP && mode != 0)
-   04A0 F8 00               939 	ldhl	sp,#0
-   04A2 7E                  940 	ld	a,(hl)
-   04A3 D6 04               941 	sub	a, #0x04
-   04A5 20 12               942 	jr	NZ,00107$
-   04A7 23                  943 	inc	hl
-   04A8 7E                  944 	ld	a,(hl)
-   04A9 B7                  945 	or	a, a
-   04AA 20 0D               946 	jr	NZ,00107$
-   04AC 78                  947 	ld	a,b
-   04AD B7                  948 	or	a, a
-   04AE 28 09               949 	jr	Z,00107$
-                            950 ;Title_screen.c:245: mode--;
-   04B0 05                  951 	dec	b
-                            952 ;Title_screen.c:246: mode_screen(mode);
-   04B1 C5                  953 	push	bc
-   04B2 C5                  954 	push	bc
-   04B3 33                  955 	inc	sp
-   04B4 CDrEDr03            956 	call	_mode_screen
-   04B7 33                  957 	inc	sp
-   04B8 C1                  958 	pop	bc
-   04B9                     959 00107$:
-                            960 ;Title_screen.c:248: if (key == J_A)
-   04B9 F8 00               961 	ldhl	sp,#0
-   04BB 7E                  962 	ld	a,(hl)
-   04BC D6 10               963 	sub	a, #0x10
-   04BE C2r5Dr04            964 	jp	NZ,00116$
-   04C1 23                  965 	inc	hl
-   04C2 7E                  966 	ld	a,(hl)
-   04C3 B7                  967 	or	a, a
-   04C4 C2r5Dr04            968 	jp	NZ,00116$
-                            969 ;Title_screen.c:250: switch (mode)
-   04C7 3E 02               970 	ld	a,#0x02
-   04C9 90                  971 	sub	a, b
-   04CA DAr5Dr04            972 	jp	C,00116$
-   04CD 58                  973 	ld	e,b
-   04CE 16 00               974 	ld	d,#0x00
-   04D0 21rD6r04            975 	ld	hl,#00161$
-   04D3 19                  976 	add	hl,de
-   04D4 19                  977 	add	hl,de
-                            978 ;Title_screen.c:252: case 0:
-   04D5 E9                  979 	jp	(hl)
-   04D6                     980 00161$:
-   04D6 18 04               981 	jr	00109$
-   04D8 18 05               982 	jr	00110$
-   04DA 18 06               983 	jr	00111$
-   04DC                     984 00109$:
-                            985 ;Title_screen.c:253: game();
-   04DC CDr88r03            986 	call	_game
-                            987 ;Title_screen.c:254: case 1:
-   04DF                     988 00110$:
-                            989 ;Title_screen.c:255: game();
-   04DF CDr88r03            990 	call	_game
-                            991 ;Title_screen.c:256: case 2:
-   04E2                     992 00111$:
-                            993 ;Title_screen.c:257: return ;
-                            994 ;Title_screen.c:258: }
-   04E2                     995 00118$:
-   04E2 E8 02               996 	add	sp, #2
-   04E4 C9                  997 	ret
-                            998 ;Title_screen.c:263: void	main(void)
-                            999 ;	---------------------------------
-                           1000 ; Function main
-                           1001 ; ---------------------------------
-   04E5                    1002 _main::
-                           1003 ;Title_screen.c:265: while (1)
-   04E5                    1004 00102$:
-                           1005 ;Title_screen.c:267: title_screen();
-   04E5 CDr9Dr03           1006 	call	_title_screen
-                           1007 ;Title_screen.c:268: select_mode();
-   04E8 CDr59r04           1008 	call	_select_mode
-   04EB 18 F8              1009 	jr	00102$
-   04ED C9                 1010 	ret
-                           1011 	.area _CODE
-                           1012 	.area _CABS (ABS)
+   0539 00                 1046 	.db 0x00
+   053A                    1047 ___str_9:
+   053A 52 65 74 75 72 6E  1048 	.ascii "Return"
+   0540 00                 1049 	.db 0x00
+                           1050 ;Title_screen.c:273: void	main(void)
+                           1051 ;	---------------------------------
+                           1052 ; Function main
+                           1053 ; ---------------------------------
+   0541                    1054 _main::
+                           1055 ;Title_screen.c:275: while (1)
+   0541                    1056 00102$:
+                           1057 ;Title_screen.c:277: title_screen();
+   0541 CDr9Dr03           1058 	call	_title_screen
+                           1059 ;Title_screen.c:278: select_mode();
+   0544 CDr39r04           1060 	call	_select_mode
+   0547 18 F8              1061 	jr	00102$
+   0549 C9                 1062 	ret
+                           1063 	.area _CODE
+                           1064 	.area _CABS (ABS)

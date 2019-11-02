@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by SDCC : free open source ANSI-C Compiler
 ; Version 3.5.0 #9253 (Apr  3 2018) (Linux)
-; This file was generated Sat Nov  2 18:49:56 2019
+; This file was generated Sat Nov  2 18:58:13 2019
 ;--------------------------------------------------------
 	.module Title_screen
 	.optsdcc -mgbz80
@@ -811,12 +811,43 @@ ___str_5:
 ; Function mode_screen
 ; ---------------------------------
 _mode_screen::
-;Title_screen.c:212: clear_screen();
-	call	_clear_screen
-;Title_screen.c:213: gotoxy(3, 5 + y);
+;Title_screen.c:212: gotoxy(3, 7);
+	ld	hl,#0x0703
+	push	hl
+	call	_gotoxy
+	add	sp, #2
+;Title_screen.c:213: setchar(' ');
+	ld	a,#0x20
+	push	af
+	inc	sp
+	call	_setchar
+	inc	sp
+;Title_screen.c:214: gotoxy(3, 8);
+	ld	hl,#0x0803
+	push	hl
+	call	_gotoxy
+	add	sp, #2
+;Title_screen.c:215: setchar(' ');
+	ld	a,#0x20
+	push	af
+	inc	sp
+	call	_setchar
+	inc	sp
+;Title_screen.c:216: gotoxy(3, 9);
+	ld	hl,#0x0903
+	push	hl
+	call	_gotoxy
+	add	sp, #2
+;Title_screen.c:217: setchar(' ');
+	ld	a,#0x20
+	push	af
+	inc	sp
+	call	_setchar
+	inc	sp
+;Title_screen.c:218: gotoxy(3, 7 + y);
 	ldhl	sp,#2
 	ld	a,(hl)
-	add	a, #0x05
+	add	a, #0x07
 	push	af
 	inc	sp
 	ld	a,#0x03
@@ -824,70 +855,73 @@ _mode_screen::
 	inc	sp
 	call	_gotoxy
 	add	sp, #2
-;Title_screen.c:214: setchar('>');
+;Title_screen.c:219: setchar('>');
 	ld	a,#0x3E
 	push	af
 	inc	sp
 	call	_setchar
 	inc	sp
-;Title_screen.c:215: gotoxy(4, 5);
-	ld	hl,#0x0504
-	push	hl
-	call	_gotoxy
-	add	sp, #2
-;Title_screen.c:216: printf("1 Player");
-	ld	de,#___str_6
-	push	de
-	call	_printf
-	add	sp, #2
-;Title_screen.c:217: gotoxy(4, 6);
-	ld	hl,#0x0604
-	push	hl
-	call	_gotoxy
-	add	sp, #2
-;Title_screen.c:218: printf("2 Players");
-	ld	de,#___str_7
-	push	de
-	call	_printf
-	add	sp, #2
-;Title_screen.c:219: gotoxy(4, 7);
-	ld	hl,#0x0704
-	push	hl
-	call	_gotoxy
-	add	sp, #2
-;Title_screen.c:220: printf("Return");
-	ld	de,#___str_8
-	push	de
-	call	_printf
-	add	sp, #2
 	ret
-___str_6:
-	.ascii "1 Player"
-	.db 0x00
-___str_7:
-	.ascii "2 Players"
-	.db 0x00
-___str_8:
-	.ascii "Return"
-	.db 0x00
-;Title_screen.c:223: void	select_mode()
+;Title_screen.c:222: void	select_mode()
 ;	---------------------------------
 ; Function select_mode
 ; ---------------------------------
 _select_mode::
 	add	sp, #-2
-;Title_screen.c:228: mode = 0;
+;Title_screen.c:227: clear_screen();
+	call	_clear_screen
+;Title_screen.c:228: gotoxy(3, 5);
+	ld	hl,#0x0503
+	push	hl
+	call	_gotoxy
+	add	sp, #2
+;Title_screen.c:229: printf("Select a mode :");
+	ld	de,#___str_6
+	push	de
+	call	_printf
+	add	sp, #2
+;Title_screen.c:230: gotoxy(4, 7);
+	ld	hl,#0x0704
+	push	hl
+	call	_gotoxy
+	add	sp, #2
+;Title_screen.c:231: printf("1 Player");
+	ld	de,#___str_7
+	push	de
+	call	_printf
+	add	sp, #2
+;Title_screen.c:232: gotoxy(4, 8);
+	ld	hl,#0x0804
+	push	hl
+	call	_gotoxy
+	add	sp, #2
+;Title_screen.c:233: printf("2 Players");
+	ld	de,#___str_8
+	push	de
+	call	_printf
+	add	sp, #2
+;Title_screen.c:234: gotoxy(4, 9);
+	ld	hl,#0x0904
+	push	hl
+	call	_gotoxy
+	add	sp, #2
+;Title_screen.c:235: printf("Return");
+	ld	de,#___str_9
+	push	de
+	call	_printf
+	add	sp, #2
+;Title_screen.c:237: mode = 0;
 	ld	b,#0x00
-;Title_screen.c:229: while (1)
+;Title_screen.c:238: while (1)
 00116$:
-;Title_screen.c:231: mode_screen(mode);
+;Title_screen.c:240: mode_screen(mode);
 	push	bc
 	push	bc
 	inc	sp
 	call	_mode_screen
 	inc	sp
 	pop	bc
-;Title_screen.c:232: key = waitpad(J_A | J_B | J_UP | J_DOWN);
+;Title_screen.c:241: key = waitpad(J_A | J_B | J_UP | J_DOWN);
 	push	bc
 	ld	a,#0x3C
 	push	af
@@ -895,7 +929,7 @@ _select_mode::
 	call	_waitpad
 	inc	sp
 	pop	bc
-;Title_screen.c:233: if (key == J_B)
+;Title_screen.c:242: if (key == J_B)
 	ldhl	sp,#0
 	ld	(hl),e
 	inc	hl
@@ -908,12 +942,12 @@ _select_mode::
 	ld	a,(hl)
 	or	a, a
 	jr	NZ,00102$
-;Title_screen.c:235: title_screen();
+;Title_screen.c:244: title_screen();
 	call	_title_screen
-;Title_screen.c:236: return ;
+;Title_screen.c:245: return ;
 	jp	00118$
 00102$:
-;Title_screen.c:238: if (key == J_DOWN && mode != 2)
+;Title_screen.c:247: if (key == J_DOWN && mode != 2)
 	ldhl	sp,#0
 	ld	a,(hl)
 	sub	a, #0x08
@@ -925,9 +959,9 @@ _select_mode::
 	ld	a,b
 	sub	a, #0x02
 	jr	Z,00104$
-;Title_screen.c:240: mode++;
+;Title_screen.c:249: mode++;
 	inc	b
-;Title_screen.c:241: mode_screen(mode);
+;Title_screen.c:250: mode_screen(mode);
 	push	bc
 	push	bc
 	inc	sp
@@ -935,7 +969,7 @@ _select_mode::
 	inc	sp
 	pop	bc
 00104$:
-;Title_screen.c:243: if (key == J_UP && mode != 0)
+;Title_screen.c:252: if (key == J_UP && mode != 0)
 	ldhl	sp,#0
 	ld	a,(hl)
 	sub	a, #0x04
@@ -947,9 +981,9 @@ _select_mode::
 	ld	a,b
 	or	a, a
 	jr	Z,00107$
-;Title_screen.c:245: mode--;
+;Title_screen.c:254: mode--;
 	dec	b
-;Title_screen.c:246: mode_screen(mode);
+;Title_screen.c:255: mode_screen(mode);
 	push	bc
 	push	bc
 	inc	sp
@@ -957,54 +991,72 @@ _select_mode::
 	inc	sp
 	pop	bc
 00107$:
-;Title_screen.c:248: if (key == J_A)
+;Title_screen.c:257: if (key == J_A)
 	ldhl	sp,#0
 	ld	a,(hl)
 	sub	a, #0x10
-	jp	NZ,00116$
+	jr	NZ,00114$
 	inc	hl
 	ld	a,(hl)
 	or	a, a
-	jp	NZ,00116$
-;Title_screen.c:250: switch (mode)
+	jr	NZ,00114$
+;Title_screen.c:259: switch (mode)
 	ld	a,#0x02
 	sub	a, b
-	jp	C,00116$
+	jr	C,00114$
 	ld	e,b
 	ld	d,#0x00
 	ld	hl,#00161$
 	add	hl,de
 	add	hl,de
-;Title_screen.c:252: case 0:
+;Title_screen.c:261: case 0:
 	jp	(hl)
 00161$:
 	jr	00109$
 	jr	00110$
-	jr	00111$
+	jr	00118$
 00109$:
-;Title_screen.c:253: game();
+;Title_screen.c:262: game();
 	call	_game
-;Title_screen.c:254: case 1:
+;Title_screen.c:263: case 1:
 00110$:
-;Title_screen.c:255: game();
+;Title_screen.c:264: game();
 	call	_game
-;Title_screen.c:256: case 2:
-00111$:
-;Title_screen.c:257: return ;
-;Title_screen.c:258: }
+;Title_screen.c:265: case 2:
+;Title_screen.c:266: return ;
+	jr	00118$
+;Title_screen.c:267: }
+00114$:
+;Title_screen.c:269: waitpadup();
+	push	bc
+	call	_waitpadup
+	pop	bc
+	jp	00116$
 00118$:
 	add	sp, #2
 	ret
-;Title_screen.c:263: void	main(void)
+___str_6:
+	.ascii "Select a mode :"
+	.db 0x00
+___str_7:
+	.ascii "1 Player"
+	.db 0x00
+___str_8:
+	.ascii "2 Players"
+	.db 0x00
+___str_9:
+	.ascii "Return"
+	.db 0x00
+;Title_screen.c:273: void	main(void)
 ;	---------------------------------
 ; Function main
 ; ---------------------------------
 _main::
-;Title_screen.c:265: while (1)
+;Title_screen.c:275: while (1)
 00102$:
-;Title_screen.c:267: title_screen();
+;Title_screen.c:277: title_screen();
 	call	_title_screen
-;Title_screen.c:268: select_mode();
+;Title_screen.c:278: select_mode();
 	call	_select_mode
 	jr	00102$
 	ret

@@ -6,7 +6,7 @@
 /*   By: vdescham <vdescham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/02 13:58:21 by vdescham          #+#    #+#             */
-/*   Updated: 2019/11/02 18:49:55 by vdescham         ###   ########.fr       */
+/*   Updated: 2019/11/02 18:58:12 by vdescham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,21 +209,30 @@ void	title_screen()
 
 void	mode_screen(UINT8 y)
 {
-	clear_screen();
-	gotoxy(3, 5 + y);
+	gotoxy(3, 7);
+	setchar(' ');
+	gotoxy(3, 8);
+	setchar(' ');
+	gotoxy(3, 9);
+	setchar(' ');
+	gotoxy(3, 7 + y);
 	setchar('>');
-	gotoxy(4, 5);
-	printf("1 Player");
-	gotoxy(4, 6);
-	printf("2 Players");
-	gotoxy(4, 7);
-	printf("Return");
 }
 
 void	select_mode()
 {
 	UINT8 key;
 	UINT8 mode;
+
+	clear_screen();
+	gotoxy(3, 5);
+	printf("Select a mode :");
+	gotoxy(4, 7);
+	printf("1 Player");
+	gotoxy(4, 8);
+	printf("2 Players");
+	gotoxy(4, 9);
+	printf("Return");
 
 	mode = 0;
 	while (1)
@@ -257,6 +266,7 @@ void	select_mode()
 					return ;
 			}
 		}
+		waitpadup();
 	}
 }
 

@@ -16,9 +16,10 @@ Symbol Table
   0 ___str_3                                                       011D R
   0 ___str_4                                                       03CF R
   0 ___str_5                                                       03DD R
-  0 ___str_6                                                       043F R
-  0 ___str_7                                                       0448 R
-  0 ___str_8                                                       0452 R
+  0 ___str_6                                                       0517 R
+  0 ___str_7                                                       0527 R
+  0 ___str_8                                                       0530 R
+  0 ___str_9                                                       053A R
   0 _clear_screen                                                  0000 GR
   0 _coord_2d_to_1d                                                0026 GR
   0 _draw_board                                                    0059 GR
@@ -26,12 +27,12 @@ Symbol Table
   0 _game                                                          0388 GR
     _gotoxy                                                        **** GX
   0 _init                                                          0032 GR
-  0 _main                                                          04E5 GR
+  0 _main                                                          0541 GR
   0 _mode_screen                                                   03ED GR
   0 _player2_play                                                  02EC GR
   0 _player_play                                                   0250 GR
     _printf                                                        **** GX
-  0 _select_mode                                                   0459 GR
+  0 _select_mode                                                   0439 GR
     _setchar                                                       **** GX
   0 _title_screen                                                  039D GR
   0 _update                                                        012E GR
@@ -44,7 +45,7 @@ Hexadecimal [16-Bits]
 
 Area Table
 
-   0 _CODE                                      size  4EE   flags    0
+   0 _CODE                                      size  54A   flags    0
    1 _DATA                                      size    B   flags    0
    2 _DABS                                      size    0   flags    8
    3 _HOME                                      size    0   flags    0
