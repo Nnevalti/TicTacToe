@@ -6,7 +6,7 @@
 /*   By: vdescham <vdescham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/02 13:58:21 by vdescham          #+#    #+#             */
-/*   Updated: 2019/11/02 18:58:12 by vdescham         ###   ########.fr       */
+/*   Updated: 2019/11/02 19:14:54 by hugovernh        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,64 @@ void	player2_play(void)
 	}
 }
 
+void computer_play(void)
+{
+	UINT8 x;
+	UINT8 y;
+	UINT8 i;
+	UINT8 player_score;
+	UINT8 computer_score;
+	UINT8 last_empty_cell;
+	INT8 loose_cell = -1;
+
+	for (y = 0 ; y < 3 ; y += 1) {
+		player_score = 0;
+		computer_score = 0;
+		for (x = 0 ; x < 3 ; x += 1) {
+			i = coord_2d_to_1d(x, y);
+			switch (GAME_BOARD[i]) {
+				case EMPTY:
+					last_empty_cell = i;
+					break;
+				case PLAYER:
+					player_score += 1;
+					break;
+				case PLAYER2:
+					computer_score += 1;
+					break;
+			}
+		}
+		if (computer_score == 2 && player_score == 0) {
+			GAME_BOARD[last_empty_cell] = PLAYER2;
+			return;
+		}
+		if (player_score == 2 && computer_score == 0) {
+			loose_cell = last_empty_cell;
+		}
+	}
+
+	if (loose_cell != -1) {
+		GAME_BOARD[loose_cell] = PLAYER2;
+		return;
+	}
+
+	GAME_BOARD[last_empty_cell] = PLAYER2;
+}
+
 void	game(void)
+{
+	init();
+	draw_board();
+	while(1)
+	{
+		player_play();
+		update();
+		computer_play();
+		update();
+	}
+}
+
+void	game2(void)
 {
 	init();
 	draw_board();
@@ -261,7 +318,7 @@ void	select_mode()
 				case 0:
 					game();
 				case 1:
-					game();
+					game2();
 				case 2:
 					return ;
 			}
