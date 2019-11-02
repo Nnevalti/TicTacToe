@@ -6,7 +6,7 @@
 /*   By: vdescham <vdescham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/02 13:58:21 by vdescham          #+#    #+#             */
-/*   Updated: 2019/11/02 16:14:36 by vdescham         ###   ########.fr       */
+/*   Updated: 2019/11/02 17:10:59 by vdescham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 #include <gb/gb.h>
 #include <gb/console.h>
 
-#define EMPTY		' ';
-#define PLAYER		'x';
-#define COMPUTER	'o';
+#define EMPTY		' '
+#define PLAYER		'x'
+#define COMPUTER	'o'
+
 UINT8 GAME_BOARD[9];
 UINT8 GAME_CURSOR_X;
 UINT8 GAME_CURSOR_Y;
 
-void	clear_screen()
+void	clear_screen(void)
 {
 	UINT8	x;
 	UINT8	y = 18;
@@ -38,6 +39,11 @@ void	clear_screen()
 	}
 }
 
+UINT8	coord_2d_to_1d(UINT8 x, UINT8 y)
+{
+	return y * 3 + x;
+}
+
 void	title_screen()
 {
 	clear_screen();
@@ -45,10 +51,26 @@ void	title_screen()
 	printf("Tic Tac Toe !");
 	gotoxy(3, 15);
 	printf("- PRESS START -");
+	waitpad(J_START);
+	waitpadup();
+}
+
+void	init(void)
+{
+	UINT8 i;
+
+	for (i = 0 ; i < 9 ; i++)
+	{
+		GAME_BOARD[i] = EMPTY;
+	}
+
+	GAME_CURSOR_X = 1;
+	GAME_CURSOR_Y = 1;
 }
 
 void	draw_board(void)
 {
+	clear_screen();
 	gotoxy(4, 1);
 	printf("Tic Tac Toe");
 	gotoxy(1, 17);
@@ -67,22 +89,25 @@ void	draw_board(void)
 	printf("       |   |   \n");
 }
 
-UINT8	coord_2d_to_1d(UINT8 x, UINT8 y)
+void	update(void)
 {
-	return (y * 3 + x);
-}
+	UINT8	i;
+	UINT8	x;
+	UINT8	y;
+	UINT8	graph_x;
+	UINT8	graph_y;
 
-void	init(void)
-{
-	UINT8 i = 0;
-
-	while(i < 9)
+	for (y = 0 ; y < 3 ; y++)
 	{
-		GAME_BOARD[i++] = EMPTY;
+		for (x = 0 ; x < 3 ; x++)
+		{
+			i = coord_2d_to_1d(x, y);
+			graph_x = 4 + x * 4 + 1;
+			graph_y = 4 + y * 4 + 1;
+			gotoxy(graph_x, graph_y);
+			setchar(GAME_BOARD[i]);
+		}
 	}
-
-	GAME_CURSOR_X = 1;
-	GAME_CURSOR_Y = 1;
 }
 
 void	draw_cursor(UINT8 cursor_char)
@@ -105,29 +130,6 @@ void	draw_cursor(UINT8 cursor_char)
 
 }
 
-void	update(void)
-{
-	UINT8	i;
-	UINT8	x = 0;
-	UINT8	y = 0;
-	UINT8	graph_x;
-	UINT8	graph_y;
-
-	while (y < 3)
-	{
-		while (x < 3)
-		{
-			i = coord_2d_to_1d(x, y);
-			graph_x = x * 4 + 5;
-			graph_y = y * 4 + 5;
-			gotoxy(graph_x, graph_y);
-			setchar(GAME_BOARD[i]);
-			x++;
-		}
-		y++;
-	}
-}
-
 void	player_play(void)
 {
 	UINT8 key;
@@ -136,7 +138,7 @@ void	player_play(void)
 	while (1)
 	{
 		draw_cursor('/');
-		key = waitpad(J_UP || J_DOWN || J_LEFT || J_RIGHT || J_A);
+		key = waitpad(J_UP | J_DOWN | J_LEFT | J_RIGHT | J_A);
 		draw_cursor(' ');
 
 		if (key == J_UP && GAME_CURSOR_Y != 0)
@@ -160,16 +162,18 @@ void	player_play(void)
 	}
 }
 
-void	main(void)
+void	game(void)
 {
-	title_screen(); // Title screen
-	waitpad(J_START); // Wait for start to be pressed
-	clear_screen(); // clear tiles
-	init(); // Init varaiables for the game
-	draw_board(); // Draw the game board
-	while (1)
+	init();
+	draw_board();
+	while(1)
 	{
 		player_play();
 		update();
 	}
+}
+void	main(void)
+{
+	title_screen();
+	game();
 }

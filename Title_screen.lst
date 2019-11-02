@@ -1,7 +1,7 @@
                               1 ;--------------------------------------------------------
                               2 ; File Created by SDCC : free open source ANSI-C Compiler
                               3 ; Version 3.5.0 #9253 (Apr  3 2018) (Linux)
-                              4 ; This file was generated Sat Nov  2 15:06:52 2019
+                              4 ; This file was generated Sat Nov  2 17:11:01 2019
                               5 ;--------------------------------------------------------
                               6 	.module Title_screen
                               7 	.optsdcc -mgbz80
@@ -10,575 +10,690 @@
                              10 ; Public variables in this module
                              11 ;--------------------------------------------------------
                              12 	.globl _main
-                             13 	.globl _update
-                             14 	.globl _draw_cursor
-                             15 	.globl _init
-                             16 	.globl _coord_2d_to_1d
+                             13 	.globl _game
+                             14 	.globl _player_play
+                             15 	.globl _draw_cursor
+                             16 	.globl _update
                              17 	.globl _draw_board
-                             18 	.globl _title_screen
-                             19 	.globl _clear_screen
-                             20 	.globl _setchar
-                             21 	.globl _gotoxy
-                             22 	.globl _waitpad
-                             23 	.globl _printf
-                             24 	.globl _GAME_CURSOR_Y
-                             25 	.globl _GAME_CURSOR_X
-                             26 	.globl _GAME_BOARD
-                             27 ;--------------------------------------------------------
-                             28 ; ram data
-                             29 ;--------------------------------------------------------
-                             30 	.area _DATA
-   0000                      31 _GAME_BOARD::
-   0000                      32 	.ds 9
-   0009                      33 _GAME_CURSOR_X::
-   0009                      34 	.ds 1
-   000A                      35 _GAME_CURSOR_Y::
-   000A                      36 	.ds 1
-                             37 ;--------------------------------------------------------
-                             38 ; absolute external ram data
-                             39 ;--------------------------------------------------------
-                             40 	.area _DABS (ABS)
-                             41 ;--------------------------------------------------------
-                             42 ; global & static initialisations
-                             43 ;--------------------------------------------------------
-                             44 	.area _HOME
-                             45 	.area _GSINIT
-                             46 	.area _GSFINAL
-                             47 	.area _GSINIT
-                             48 ;--------------------------------------------------------
-                             49 ; Home
-                             50 ;--------------------------------------------------------
-                             51 	.area _HOME
-                             52 	.area _HOME
+                             18 	.globl _init
+                             19 	.globl _title_screen
+                             20 	.globl _coord_2d_to_1d
+                             21 	.globl _clear_screen
+                             22 	.globl _setchar
+                             23 	.globl _gotoxy
+                             24 	.globl _waitpadup
+                             25 	.globl _waitpad
+                             26 	.globl _printf
+                             27 	.globl _GAME_CURSOR_Y
+                             28 	.globl _GAME_CURSOR_X
+                             29 	.globl _GAME_BOARD
+                             30 ;--------------------------------------------------------
+                             31 ; ram data
+                             32 ;--------------------------------------------------------
+                             33 	.area _DATA
+   0000                      34 _GAME_BOARD::
+   0000                      35 	.ds 9
+   0009                      36 _GAME_CURSOR_X::
+   0009                      37 	.ds 1
+   000A                      38 _GAME_CURSOR_Y::
+   000A                      39 	.ds 1
+                             40 ;--------------------------------------------------------
+                             41 ; absolute external ram data
+                             42 ;--------------------------------------------------------
+                             43 	.area _DABS (ABS)
+                             44 ;--------------------------------------------------------
+                             45 ; global & static initialisations
+                             46 ;--------------------------------------------------------
+                             47 	.area _HOME
+                             48 	.area _GSINIT
+                             49 	.area _GSFINAL
+                             50 	.area _GSINIT
+                             51 ;--------------------------------------------------------
+                             52 ; Home
                              53 ;--------------------------------------------------------
-                             54 ; code
-                             55 ;--------------------------------------------------------
-                             56 	.area _CODE
-                             57 ;Title_screen.c:24: void	clear_screen()
-                             58 ;	---------------------------------
-                             59 ; Function clear_screen
-                             60 ; ---------------------------------
-   0000                      61 _clear_screen::
-                             62 ;Title_screen.c:28: while (y)
-   0000 06 12                63 	ld	b,#0x12
-   0002                      64 00104$:
-   0002 78                   65 	ld	a,b
-   0003 B7                   66 	or	a, a
-   0004 C8                   67 	ret	Z
-                             68 ;Title_screen.c:30: y -= 1;
-   0005 05                   69 	dec	b
-                             70 ;Title_screen.c:32: while (x)
-   0006 0E 14                71 	ld	c,#0x14
-   0008                      72 00101$:
-   0008 79                   73 	ld	a,c
-   0009 B7                   74 	or	a, a
-   000A 28 F6                75 	jr	Z,00104$
-                             76 ;Title_screen.c:34: x -= 1;
-   000C 0D                   77 	dec	c
-                             78 ;Title_screen.c:35: gotoxy(x, y);
-   000D C5                   79 	push	bc
-   000E C5                   80 	push	bc
-   000F 33                   81 	inc	sp
-   0010 79                   82 	ld	a,c
-   0011 F5                   83 	push	af
-   0012 33                   84 	inc	sp
-   0013 CDr00r00             85 	call	_gotoxy
-   0016 E8 02                86 	add	sp, #2
-   0018 C1                   87 	pop	bc
-                             88 ;Title_screen.c:36: setchar(' ');
-   0019 C5                   89 	push	bc
-   001A 3E 20                90 	ld	a,#0x20
-   001C F5                   91 	push	af
-   001D 33                   92 	inc	sp
-   001E CDr00r00             93 	call	_setchar
-   0021 33                   94 	inc	sp
-   0022 C1                   95 	pop	bc
-   0023 18 E3                96 	jr	00101$
-   0025 C9                   97 	ret
-                             98 ;Title_screen.c:41: void	title_screen()
-                             99 ;	---------------------------------
-                            100 ; Function title_screen
-                            101 ; ---------------------------------
-   0026                     102 _title_screen::
-                            103 ;Title_screen.c:43: clear_screen();
-   0026 CDr00r00            104 	call	_clear_screen
-                            105 ;Title_screen.c:44: gotoxy(4, 5);
-   0029 21 04 05            106 	ld	hl,#0x0504
-   002C E5                  107 	push	hl
-   002D CDr00r00            108 	call	_gotoxy
-   0030 E8 02               109 	add	sp, #2
-                            110 ;Title_screen.c:45: printf("Tic Tac Toe !");
-   0032 11r4Er00            111 	ld	de,#___str_0
-   0035 D5                  112 	push	de
-   0036 CDr00r00            113 	call	_printf
-   0039 E8 02               114 	add	sp, #2
-                            115 ;Title_screen.c:46: gotoxy(3, 15);
-   003B 21 03 0F            116 	ld	hl,#0x0F03
-   003E E5                  117 	push	hl
-   003F CDr00r00            118 	call	_gotoxy
-   0042 E8 02               119 	add	sp, #2
-                            120 ;Title_screen.c:47: printf("- PRESS START -");
-   0044 11r5Cr00            121 	ld	de,#___str_1
-   0047 D5                  122 	push	de
-   0048 CDr00r00            123 	call	_printf
-   004B E8 02               124 	add	sp, #2
-   004D C9                  125 	ret
-   004E                     126 ___str_0:
-   004E 54 69 63 20 54 61   127 	.ascii "Tic Tac Toe !"
+                             54 	.area _HOME
+                             55 	.area _HOME
+                             56 ;--------------------------------------------------------
+                             57 ; code
+                             58 ;--------------------------------------------------------
+                             59 	.area _CODE
+                             60 ;Title_screen.c:25: void	clear_screen(void)
+                             61 ;	---------------------------------
+                             62 ; Function clear_screen
+                             63 ; ---------------------------------
+   0000                      64 _clear_screen::
+                             65 ;Title_screen.c:29: while (y)
+   0000 06 12                66 	ld	b,#0x12
+   0002                      67 00104$:
+   0002 78                   68 	ld	a,b
+   0003 B7                   69 	or	a, a
+   0004 C8                   70 	ret	Z
+                             71 ;Title_screen.c:31: y -= 1;
+   0005 05                   72 	dec	b
+                             73 ;Title_screen.c:33: while (x)
+   0006 0E 14                74 	ld	c,#0x14
+   0008                      75 00101$:
+   0008 79                   76 	ld	a,c
+   0009 B7                   77 	or	a, a
+   000A 28 F6                78 	jr	Z,00104$
+                             79 ;Title_screen.c:35: x -= 1;
+   000C 0D                   80 	dec	c
+                             81 ;Title_screen.c:36: gotoxy(x, y);
+   000D C5                   82 	push	bc
+   000E C5                   83 	push	bc
+   000F 33                   84 	inc	sp
+   0010 79                   85 	ld	a,c
+   0011 F5                   86 	push	af
+   0012 33                   87 	inc	sp
+   0013 CDr00r00             88 	call	_gotoxy
+   0016 E8 02                89 	add	sp, #2
+   0018 C1                   90 	pop	bc
+                             91 ;Title_screen.c:37: setchar(' ');
+   0019 C5                   92 	push	bc
+   001A 3E 20                93 	ld	a,#0x20
+   001C F5                   94 	push	af
+   001D 33                   95 	inc	sp
+   001E CDr00r00             96 	call	_setchar
+   0021 33                   97 	inc	sp
+   0022 C1                   98 	pop	bc
+   0023 18 E3                99 	jr	00101$
+   0025 C9                  100 	ret
+                            101 ;Title_screen.c:42: UINT8	coord_2d_to_1d(UINT8 x, UINT8 y)
+                            102 ;	---------------------------------
+                            103 ; Function coord_2d_to_1d
+                            104 ; ---------------------------------
+   0026                     105 _coord_2d_to_1d::
+                            106 ;Title_screen.c:44: return y * 3 + x;
+   0026 F8 03               107 	ldhl	sp,#3
+   0028 7E                  108 	ld	a,(hl)
+   0029 4F                  109 	ld	c,a
+   002A 87                  110 	add	a, a
+   002B 81                  111 	add	a, c
+   002C 47                  112 	ld	b,a
+   002D F8 02               113 	ldhl	sp,#2
+   002F 86                  114 	add	a, (hl)
+   0030 5F                  115 	ld	e,a
+   0031 C9                  116 	ret
+                            117 ;Title_screen.c:47: void	title_screen()
+                            118 ;	---------------------------------
+                            119 ; Function title_screen
+                            120 ; ---------------------------------
+   0032                     121 _title_screen::
+                            122 ;Title_screen.c:49: clear_screen();
+   0032 CDr00r00            123 	call	_clear_screen
+                            124 ;Title_screen.c:50: gotoxy(4, 5);
+   0035 21 04 05            125 	ld	hl,#0x0504
+   0038 E5                  126 	push	hl
+   0039 CDr00r00            127 	call	_gotoxy
+   003C E8 02               128 	add	sp, #2
+                            129 ;Title_screen.c:51: printf("Tic Tac Toe !");
+   003E 11r64r00            130 	ld	de,#___str_0
+   0041 D5                  131 	push	de
+   0042 CDr00r00            132 	call	_printf
+   0045 E8 02               133 	add	sp, #2
+                            134 ;Title_screen.c:52: gotoxy(3, 15);
+   0047 21 03 0F            135 	ld	hl,#0x0F03
+   004A E5                  136 	push	hl
+   004B CDr00r00            137 	call	_gotoxy
+   004E E8 02               138 	add	sp, #2
+                            139 ;Title_screen.c:53: printf("- PRESS START -");
+   0050 11r72r00            140 	ld	de,#___str_1
+   0053 D5                  141 	push	de
+   0054 CDr00r00            142 	call	_printf
+   0057 E8 02               143 	add	sp, #2
+                            144 ;Title_screen.c:54: waitpad(J_START);
+   0059 3E 80               145 	ld	a,#0x80
+   005B F5                  146 	push	af
+   005C 33                  147 	inc	sp
+   005D CDr00r00            148 	call	_waitpad
+   0060 33                  149 	inc	sp
+                            150 ;Title_screen.c:55: waitpadup();
+   0061 C3r00r00            151 	jp	_waitpadup
+   0064                     152 ___str_0:
+   0064 54 69 63 20 54 61   153 	.ascii "Tic Tac Toe !"
         63 20 54 6F 65 20
         21
-   005B 00                  128 	.db 0x00
-   005C                     129 ___str_1:
-   005C 2D 20 50 52 45 53   130 	.ascii "- PRESS START -"
+   0071 00                  154 	.db 0x00
+   0072                     155 ___str_1:
+   0072 2D 20 50 52 45 53   156 	.ascii "- PRESS START -"
         53 20 53 54 41 52
         54 20 2D
-   006B 00                  131 	.db 0x00
-                            132 ;Title_screen.c:50: void	draw_board(void)
-                            133 ;	---------------------------------
-                            134 ; Function draw_board
-                            135 ; ---------------------------------
-   006C                     136 _draw_board::
-                            137 ;Title_screen.c:52: gotoxy(4, 1);
-   006C 21 04 01            138 	ld	hl,#0x0104
-   006F E5                  139 	push	hl
-   0070 CDr00r00            140 	call	_gotoxy
-   0073 E8 02               141 	add	sp, #2
-                            142 ;Title_screen.c:53: printf("Tic Tac Toe");
-   0075 11rFDr00            143 	ld	de,#___str_2
-   0078 D5                  144 	push	de
-   0079 CDr00r00            145 	call	_printf
-   007C E8 02               146 	add	sp, #2
-                            147 ;Title_screen.c:54: gotoxy(1, 17);
-   007E 21 01 11            148 	ld	hl,#0x1101
-   0081 E5                  149 	push	hl
-   0082 CDr00r00            150 	call	_gotoxy
-   0085 E8 02               151 	add	sp, #2
-                            152 ;Title_screen.c:55: printf("X you - O Computer");
-   0087 11r09r01            153 	ld	de,#___str_3
-   008A D5                  154 	push	de
-   008B CDr00r00            155 	call	_printf
-   008E E8 02               156 	add	sp, #2
-                            157 ;Title_screen.c:56: gotoxy(0, 4);
-   0090 21 00 04            158 	ld	hl,#0x0400
-   0093 E5                  159 	push	hl
-   0094 CDr00r00            160 	call	_gotoxy
-   0097 E8 02               161 	add	sp, #2
-                            162 ;Title_screen.c:57: printf("       |   |   \n");
-   0099 11r1Cr01            163 	ld	de,#___str_4
-   009C D5                  164 	push	de
-   009D CDr00r00            165 	call	_printf
-   00A0 E8 02               166 	add	sp, #2
-                            167 ;Title_screen.c:58: printf("       |   |   \n");
-   00A2 11r1Cr01            168 	ld	de,#___str_4
-   00A5 D5                  169 	push	de
-   00A6 CDr00r00            170 	call	_printf
-   00A9 E8 02               171 	add	sp, #2
-                            172 ;Title_screen.c:59: printf("       |   |   \n");
-   00AB 11r1Cr01            173 	ld	de,#___str_4
-   00AE D5                  174 	push	de
-   00AF CDr00r00            175 	call	_printf
-   00B2 E8 02               176 	add	sp, #2
-                            177 ;Title_screen.c:60: printf("    ---+---+---\n");
-   00B4 11r2Dr01            178 	ld	de,#___str_5
-   00B7 D5                  179 	push	de
-   00B8 CDr00r00            180 	call	_printf
-   00BB E8 02               181 	add	sp, #2
-                            182 ;Title_screen.c:61: printf("       |   |   \n");
-   00BD 11r1Cr01            183 	ld	de,#___str_4
-   00C0 D5                  184 	push	de
-   00C1 CDr00r00            185 	call	_printf
-   00C4 E8 02               186 	add	sp, #2
-                            187 ;Title_screen.c:62: printf("       |   |   \n");
-   00C6 11r1Cr01            188 	ld	de,#___str_4
-   00C9 D5                  189 	push	de
-   00CA CDr00r00            190 	call	_printf
-   00CD E8 02               191 	add	sp, #2
-                            192 ;Title_screen.c:63: printf("       |   |   \n");
-   00CF 11r1Cr01            193 	ld	de,#___str_4
-   00D2 D5                  194 	push	de
-   00D3 CDr00r00            195 	call	_printf
-   00D6 E8 02               196 	add	sp, #2
-                            197 ;Title_screen.c:64: printf("    ---+---+---\n");
-   00D8 11r2Dr01            198 	ld	de,#___str_5
-   00DB D5                  199 	push	de
-   00DC CDr00r00            200 	call	_printf
-   00DF E8 02               201 	add	sp, #2
-                            202 ;Title_screen.c:65: printf("       |   |   \n");
-   00E1 11r1Cr01            203 	ld	de,#___str_4
-   00E4 D5                  204 	push	de
-   00E5 CDr00r00            205 	call	_printf
-   00E8 E8 02               206 	add	sp, #2
-                            207 ;Title_screen.c:66: printf("       |   |   \n");
-   00EA 11r1Cr01            208 	ld	de,#___str_4
-   00ED D5                  209 	push	de
-   00EE CDr00r00            210 	call	_printf
-   00F1 E8 02               211 	add	sp, #2
-                            212 ;Title_screen.c:67: printf("       |   |   \n");
-   00F3 11r1Cr01            213 	ld	de,#___str_4
-   00F6 D5                  214 	push	de
-   00F7 CDr00r00            215 	call	_printf
-   00FA E8 02               216 	add	sp, #2
-   00FC C9                  217 	ret
-   00FD                     218 ___str_2:
-   00FD 54 69 63 20 54 61   219 	.ascii "Tic Tac Toe"
+   0081 00                  157 	.db 0x00
+                            158 ;Title_screen.c:58: void	init(void)
+                            159 ;	---------------------------------
+                            160 ; Function init
+                            161 ; ---------------------------------
+   0082                     162 _init::
+   0082 3B                  163 	dec	sp
+                            164 ;Title_screen.c:62: for (i = 0 ; i < 9 ; i++)
+   0083 F8 00               165 	ldhl	sp,#0
+   0085 36 00               166 	ld	(hl),#0x00
+   0087                     167 00102$:
+                            168 ;Title_screen.c:64: GAME_BOARD[i] = EMPTY;
+   0087 11r00r00            169 	ld	de,#_GAME_BOARD
+   008A F8 00               170 	ldhl	sp,#0
+   008C 6E                  171 	ld	l,(hl)
+   008D 26 00               172 	ld	h,#0x00
+   008F 19                  173 	add	hl,de
+   0090 4D                  174 	ld	c,l
+   0091 44                  175 	ld	b,h
+   0092 3E 20               176 	ld	a,#0x20
+   0094 02                  177 	ld	(bc),a
+                            178 ;Title_screen.c:62: for (i = 0 ; i < 9 ; i++)
+   0095 F8 00               179 	ldhl	sp,#0
+   0097 34                  180 	inc	(hl)
+   0098 7E                  181 	ld	a,(hl)
+   0099 D6 09               182 	sub	a, #0x09
+   009B 38 EA               183 	jr	C,00102$
+                            184 ;Title_screen.c:67: GAME_CURSOR_X = 1;
+   009D 21r09r00            185 	ld	hl,#_GAME_CURSOR_X
+   00A0 36 01               186 	ld	(hl),#0x01
+                            187 ;Title_screen.c:68: GAME_CURSOR_Y = 1;
+   00A2 21r0Ar00            188 	ld	hl,#_GAME_CURSOR_Y
+   00A5 36 01               189 	ld	(hl),#0x01
+   00A7 33                  190 	inc	sp
+   00A8 C9                  191 	ret
+                            192 ;Title_screen.c:71: void	draw_board(void)
+                            193 ;	---------------------------------
+                            194 ; Function draw_board
+                            195 ; ---------------------------------
+   00A9                     196 _draw_board::
+                            197 ;Title_screen.c:73: clear_screen();
+   00A9 CDr00r00            198 	call	_clear_screen
+                            199 ;Title_screen.c:74: gotoxy(4, 1);
+   00AC 21 04 01            200 	ld	hl,#0x0104
+   00AF E5                  201 	push	hl
+   00B0 CDr00r00            202 	call	_gotoxy
+   00B3 E8 02               203 	add	sp, #2
+                            204 ;Title_screen.c:75: printf("Tic Tac Toe");
+   00B5 11r3Dr01            205 	ld	de,#___str_2
+   00B8 D5                  206 	push	de
+   00B9 CDr00r00            207 	call	_printf
+   00BC E8 02               208 	add	sp, #2
+                            209 ;Title_screen.c:76: gotoxy(1, 17);
+   00BE 21 01 11            210 	ld	hl,#0x1101
+   00C1 E5                  211 	push	hl
+   00C2 CDr00r00            212 	call	_gotoxy
+   00C5 E8 02               213 	add	sp, #2
+                            214 ;Title_screen.c:77: printf("X you - O Computer");
+   00C7 11r49r01            215 	ld	de,#___str_3
+   00CA D5                  216 	push	de
+   00CB CDr00r00            217 	call	_printf
+   00CE E8 02               218 	add	sp, #2
+                            219 ;Title_screen.c:78: gotoxy(0, 4);
+   00D0 21 00 04            220 	ld	hl,#0x0400
+   00D3 E5                  221 	push	hl
+   00D4 CDr00r00            222 	call	_gotoxy
+   00D7 E8 02               223 	add	sp, #2
+                            224 ;Title_screen.c:79: printf("       |   |   \n");
+   00D9 11r5Cr01            225 	ld	de,#___str_4
+   00DC D5                  226 	push	de
+   00DD CDr00r00            227 	call	_printf
+   00E0 E8 02               228 	add	sp, #2
+                            229 ;Title_screen.c:80: printf("       |   |   \n");
+   00E2 11r5Cr01            230 	ld	de,#___str_4
+   00E5 D5                  231 	push	de
+   00E6 CDr00r00            232 	call	_printf
+   00E9 E8 02               233 	add	sp, #2
+                            234 ;Title_screen.c:81: printf("       |   |   \n");
+   00EB 11r5Cr01            235 	ld	de,#___str_4
+   00EE D5                  236 	push	de
+   00EF CDr00r00            237 	call	_printf
+   00F2 E8 02               238 	add	sp, #2
+                            239 ;Title_screen.c:82: printf("    ---+---+---\n");
+   00F4 11r6Dr01            240 	ld	de,#___str_5
+   00F7 D5                  241 	push	de
+   00F8 CDr00r00            242 	call	_printf
+   00FB E8 02               243 	add	sp, #2
+                            244 ;Title_screen.c:83: printf("       |   |   \n");
+   00FD 11r5Cr01            245 	ld	de,#___str_4
+   0100 D5                  246 	push	de
+   0101 CDr00r00            247 	call	_printf
+   0104 E8 02               248 	add	sp, #2
+                            249 ;Title_screen.c:84: printf("       |   |   \n");
+   0106 11r5Cr01            250 	ld	de,#___str_4
+   0109 D5                  251 	push	de
+   010A CDr00r00            252 	call	_printf
+   010D E8 02               253 	add	sp, #2
+                            254 ;Title_screen.c:85: printf("       |   |   \n");
+   010F 11r5Cr01            255 	ld	de,#___str_4
+   0112 D5                  256 	push	de
+   0113 CDr00r00            257 	call	_printf
+   0116 E8 02               258 	add	sp, #2
+                            259 ;Title_screen.c:86: printf("    ---+---+---\n");
+   0118 11r6Dr01            260 	ld	de,#___str_5
+   011B D5                  261 	push	de
+   011C CDr00r00            262 	call	_printf
+   011F E8 02               263 	add	sp, #2
+                            264 ;Title_screen.c:87: printf("       |   |   \n");
+   0121 11r5Cr01            265 	ld	de,#___str_4
+   0124 D5                  266 	push	de
+   0125 CDr00r00            267 	call	_printf
+   0128 E8 02               268 	add	sp, #2
+                            269 ;Title_screen.c:88: printf("       |   |   \n");
+   012A 11r5Cr01            270 	ld	de,#___str_4
+   012D D5                  271 	push	de
+   012E CDr00r00            272 	call	_printf
+   0131 E8 02               273 	add	sp, #2
+                            274 ;Title_screen.c:89: printf("       |   |   \n");
+   0133 11r5Cr01            275 	ld	de,#___str_4
+   0136 D5                  276 	push	de
+   0137 CDr00r00            277 	call	_printf
+   013A E8 02               278 	add	sp, #2
+   013C C9                  279 	ret
+   013D                     280 ___str_2:
+   013D 54 69 63 20 54 61   281 	.ascii "Tic Tac Toe"
         63 20 54 6F 65
-   0108 00                  220 	.db 0x00
-   0109                     221 ___str_3:
-   0109 58 20 79 6F 75 20   222 	.ascii "X you - O Computer"
+   0148 00                  282 	.db 0x00
+   0149                     283 ___str_3:
+   0149 58 20 79 6F 75 20   284 	.ascii "X you - O Computer"
         2D 20 4F 20 43 6F
         6D 70 75 74 65 72
-   011B 00                  223 	.db 0x00
-   011C                     224 ___str_4:
-   011C 20 20 20 20 20 20   225 	.ascii "       |   |   "
+   015B 00                  285 	.db 0x00
+   015C                     286 ___str_4:
+   015C 20 20 20 20 20 20   287 	.ascii "       |   |   "
         20 7C 20 20 20 7C
         20 20 20
-   012B 0A                  226 	.db 0x0A
-   012C 00                  227 	.db 0x00
-   012D                     228 ___str_5:
-   012D 20 20 20 20 2D 2D   229 	.ascii "    ---+---+---"
+   016B 0A                  288 	.db 0x0A
+   016C 00                  289 	.db 0x00
+   016D                     290 ___str_5:
+   016D 20 20 20 20 2D 2D   291 	.ascii "    ---+---+---"
         2D 2B 2D 2D 2D 2B
         2D 2D 2D
-   013C 0A                  230 	.db 0x0A
-   013D 00                  231 	.db 0x00
-                            232 ;Title_screen.c:70: UINT8	coord_2d_to_1d(UINT8 x, UINT8 y)
-                            233 ;	---------------------------------
-                            234 ; Function coord_2d_to_1d
-                            235 ; ---------------------------------
-   013E                     236 _coord_2d_to_1d::
-                            237 ;Title_screen.c:72: return y * 3 + x;
-   013E F8 03               238 	ldhl	sp,#3
-   0140 7E                  239 	ld	a,(hl)
-   0141 4F                  240 	ld	c,a
-   0142 87                  241 	add	a, a
-   0143 81                  242 	add	a, c
-   0144 47                  243 	ld	b,a
-   0145 F8 02               244 	ldhl	sp,#2
-   0147 86                  245 	add	a, (hl)
-   0148 5F                  246 	ld	e,a
-   0149 C9                  247 	ret
-                            248 ;Title_screen.c:75: void	init(void)
-                            249 ;	---------------------------------
-                            250 ; Function init
-                            251 ; ---------------------------------
-   014A                     252 _init::
-   014A 3B                  253 	dec	sp
-                            254 ;Title_screen.c:79: while(i < 9)
-   014B F8 00               255 	ldhl	sp,#0
-   014D 36 00               256 	ld	(hl),#0x00
-   014F                     257 00101$:
-   014F F8 00               258 	ldhl	sp,#0
-   0151 7E                  259 	ld	a,(hl)
-   0152 D6 09               260 	sub	a, #0x09
-   0154 30 10               261 	jr	NC,00103$
-                            262 ;Title_screen.c:81: GAME_BOARD[i++] = EMPTY;
-   0156 46                  263 	ld	b,(hl)
-   0157 34                  264 	inc	(hl)
-   0158 3Er00               265 	ld	a,#<(_GAME_BOARD)
-   015A 80                  266 	add	a, b
-   015B 4F                  267 	ld	c,a
-   015C 3Es00               268 	ld	a,#>(_GAME_BOARD)
-   015E CE 00               269 	adc	a, #0x00
-   0160 47                  270 	ld	b,a
-   0161 3E 20               271 	ld	a,#0x20
-   0163 02                  272 	ld	(bc),a
-   0164 18 E9               273 	jr	00101$
-   0166                     274 00103$:
-                            275 ;Title_screen.c:84: GAME_CURSOR_X = 1;
-   0166 21r09r00            276 	ld	hl,#_GAME_CURSOR_X
-   0169 36 01               277 	ld	(hl),#0x01
-                            278 ;Title_screen.c:85: GAME_CURSOR_Y = 1;
-   016B 21r0Ar00            279 	ld	hl,#_GAME_CURSOR_Y
-   016E 36 01               280 	ld	(hl),#0x01
-   0170 33                  281 	inc	sp
-   0171 C9                  282 	ret
-                            283 ;Title_screen.c:88: void	draw_cursor(UINT8 cursor_char)
-                            284 ;	---------------------------------
-                            285 ; Function draw_cursor
-                            286 ; ---------------------------------
-   0172                     287 _draw_cursor::
-   0172 E8 F7               288 	add	sp, #-9
-                            289 ;Title_screen.c:90: UINT8 graph_x = GAME_CURSOR_X * 4 + 5;
-   0174 21r09r00            290 	ld	hl,#_GAME_CURSOR_X
-   0177 7E                  291 	ld	a,(hl)
-   0178 87                  292 	add	a, a
-   0179 87                  293 	add	a, a
-   017A C6 05               294 	add	a, #0x05
-   017C F8 01               295 	ldhl	sp,#1
-   017E 77                  296 	ld	(hl),a
-                            297 ;Title_screen.c:91: UINT8 graph_y = GAME_CURSOR_Y * 4 + 5;
-   017F 21r0Ar00            298 	ld	hl,#_GAME_CURSOR_Y
-   0182 7E                  299 	ld	a,(hl)
-   0183 87                  300 	add	a, a
-   0184 87                  301 	add	a, a
-   0185 C6 05               302 	add	a, #0x05
-   0187 F8 00               303 	ldhl	sp,#0
-   0189 77                  304 	ld	(hl),a
-                            305 ;Title_screen.c:95: for (cy = graph_y - 1 ; cy <= graph_y + 1 ; cy ++)
-   018A 7E                  306 	ld	a,(hl)
-   018B C6 FF               307 	add	a,#0xFF
-   018D F8 05               308 	ldhl	sp,#5
-   018F 77                  309 	ld	(hl),a
-   0190 F8 01               310 	ldhl	sp,#1
-   0192 7E                  311 	ld	a,(hl)
-   0193 C6 FF               312 	add	a,#0xFF
-   0195 23                  313 	inc	hl
-   0196 77                  314 	ld	(hl),a
-   0197                     315 00110$:
-   0197 F8 00               316 	ldhl	sp,#0
-   0199 4E                  317 	ld	c,(hl)
-   019A 06 00               318 	ld	b,#0x00
-   019C 03                  319 	inc	bc
-   019D F8 03               320 	ldhl	sp,#3
-   019F 71                  321 	ld	(hl),c
-   01A0 23                  322 	inc	hl
-   01A1 70                  323 	ld	(hl),b
-   01A2 23                  324 	inc	hl
-   01A3 46                  325 	ld	b,(hl)
-   01A4 0E 00               326 	ld	c,#0x00
-   01A6 2B                  327 	dec	hl
-   01A7 2B                  328 	dec	hl
-   01A8 7E                  329 	ld	a, (hl)
-   01A9 90                  330 	sub	a, b
-   01AA 23                  331 	inc	hl
-   01AB 7E                  332 	ld	a, (hl)
-   01AC 99                  333 	sbc	a, c
-   01AD 56                  334 	ld	d, (hl)
-   01AE 79                  335 	ld	a,c
-   01AF 5F                  336 	ld	e, a
-   01B0 CB 7B               337 	bit	7, e
-   01B2 28 07               338 	jr	Z,00136$
-   01B4 CB 7A               339 	bit	7, d
-   01B6 20 08               340 	jr	NZ,00137$
-   01B8 BF                  341 	cp	a, a
-   01B9 18 05               342 	jr	00137$
-   01BB                     343 00136$:
-   01BB CB 7A               344 	bit	7, d
-   01BD 28 01               345 	jr	Z,00137$
-   01BF 37                  346 	scf
-   01C0                     347 00137$:
-   01C0 DAr33r02            348 	jp	C,00112$
-                            349 ;Title_screen.c:97: for (cx = graph_x - 1 ; cx <= graph_x + 1 ; cx++)
-   01C3 E5                  350 	push	hl
-   01C4 F8 04               351 	ldhl	sp,#4
-   01C6 2A                  352 	ld	a,(hl+)
-   01C7 77                  353 	ld	(hl),a
-   01C8 E1                  354 	pop	hl
-   01C9 F8 00               355 	ldhl	sp,#0
-   01CB 7E                  356 	ld	a,(hl)
-   01CC F8 05               357 	ldhl	sp,#5
-   01CE 96                  358 	sub	a, (hl)
-   01CF 20 04               359 	jr	NZ,00138$
-   01D1 3E 01               360 	ld	a,#0x01
-   01D3 18 01               361 	jr	00139$
-   01D5                     362 00138$:
-   01D5 AF                  363 	xor	a,a
-   01D6                     364 00139$:
-   01D6 F8 06               365 	ldhl	sp,#6
-   01D8 77                  366 	ld	(hl),a
-   01D9                     367 00108$:
-   01D9 F8 01               368 	ldhl	sp,#1
-   01DB 4E                  369 	ld	c,(hl)
-   01DC 06 00               370 	ld	b,#0x00
-   01DE 03                  371 	inc	bc
-   01DF 23                  372 	inc	hl
-   01E0 23                  373 	inc	hl
-   01E1 7E                  374 	ld	a,(hl)
-   01E2 F8 07               375 	ldhl	sp,#7
-   01E4 22                  376 	ld	(hl+),a
-   01E5 36 00               377 	ld	(hl),#0x00
-   01E7 2B                  378 	dec	hl
-   01E8 79                  379 	ld	a,c
-   01E9 96                  380 	sub	a, (hl)
-   01EA 23                  381 	inc	hl
-   01EB 78                  382 	ld	a,b
-   01EC 9E                  383 	sbc	a, (hl)
-   01ED 78                  384 	ld	a,b
-   01EE 57                  385 	ld	d, a
-   01EF 5E                  386 	ld	e, (hl)
-   01F0 CB 7B               387 	bit	7, e
-   01F2 28 07               388 	jr	Z,00140$
-   01F4 CB 7A               389 	bit	7, d
-   01F6 20 08               390 	jr	NZ,00141$
-   01F8 BF                  391 	cp	a, a
-   01F9 18 05               392 	jr	00141$
-   01FB                     393 00140$:
-   01FB CB 7A               394 	bit	7, d
-   01FD 28 01               395 	jr	Z,00141$
-   01FF 37                  396 	scf
-   0200                     397 00141$:
-   0200 38 2B               398 	jr	C,00111$
-                            399 ;Title_screen.c:99: if (cx == graph_x && cy == graph_y)
-   0202 F8 01               400 	ldhl	sp,#1
-   0204 2A                  401 	ld	a,(hl+)
-   0205 23                  402 	inc	hl
-   0206 96                  403 	sub	a, (hl)
-   0207 20 06               404 	jr	NZ,00102$
-   0209 F8 06               405 	ldhl	sp,#6
-   020B 7E                  406 	ld	a,(hl)
-   020C B7                  407 	or	a, a
-   020D 20 18               408 	jr	NZ,00104$
-                            409 ;Title_screen.c:100: continue ;
-   020F                     410 00102$:
-                            411 ;Title_screen.c:101: gotoxy(cx, cy);
-   020F F8 05               412 	ldhl	sp,#5
-   0211 7E                  413 	ld	a,(hl)
-   0212 F5                  414 	push	af
-   0213 33                  415 	inc	sp
-   0214 2B                  416 	dec	hl
-   0215 2B                  417 	dec	hl
-   0216 7E                  418 	ld	a,(hl)
-   0217 F5                  419 	push	af
-   0218 33                  420 	inc	sp
-   0219 CDr00r00            421 	call	_gotoxy
-   021C E8 02               422 	add	sp, #2
-                            423 ;Title_screen.c:102: setchar(cursor_char);
-   021E F8 0B               424 	ldhl	sp,#11
-   0220 7E                  425 	ld	a,(hl)
-   0221 F5                  426 	push	af
-   0222 33                  427 	inc	sp
-   0223 CDr00r00            428 	call	_setchar
-   0226 33                  429 	inc	sp
-   0227                     430 00104$:
-                            431 ;Title_screen.c:97: for (cx = graph_x - 1 ; cx <= graph_x + 1 ; cx++)
-   0227 F8 03               432 	ldhl	sp,#3
-   0229 34                  433 	inc	(hl)
-   022A C3rD9r01            434 	jp	00108$
-   022D                     435 00111$:
-                            436 ;Title_screen.c:95: for (cy = graph_y - 1 ; cy <= graph_y + 1 ; cy ++)
-   022D F8 05               437 	ldhl	sp,#5
-   022F 34                  438 	inc	(hl)
-   0230 C3r97r01            439 	jp	00110$
-   0233                     440 00112$:
-   0233 E8 09               441 	add	sp, #9
-   0235 C9                  442 	ret
-                            443 ;Title_screen.c:108: void	update(void)
-                            444 ;	---------------------------------
-                            445 ; Function update
-                            446 ; ---------------------------------
-   0236                     447 _update::
-   0236 E8 FC               448 	add	sp, #-4
-                            449 ;Title_screen.c:111: UINT8	x = 0;
-   0238 06 00               450 	ld	b,#0x00
-                            451 ;Title_screen.c:116: while (y < 3)
-   023A 0E 00               452 	ld	c,#0x00
-   023C                     453 00104$:
-                            454 ;Title_screen.c:118: while (x < 3)
-   023C 79                  455 	ld	a,c
-   023D FE 03               456 	cp	a,#0x03
-   023F D2r96r02            457 	jp	NC,00107$
-   0242 87                  458 	add	a, a
-   0243 87                  459 	add	a, a
-   0244 C6 05               460 	add	a, #0x05
-   0246 F8 03               461 	ldhl	sp,#3
-   0248 77                  462 	ld	(hl),a
-   0249                     463 00101$:
-   0249 78                  464 	ld	a,b
-   024A D6 03               465 	sub	a, #0x03
-   024C D2r92r02            466 	jp	NC,00112$
-                            467 ;Title_screen.c:120: i = coord_2d_to_1d(x, y);
-   024F C5                  468 	push	bc
-   0250 79                  469 	ld	a,c
-   0251 F5                  470 	push	af
-   0252 33                  471 	inc	sp
-   0253 C5                  472 	push	bc
-   0254 33                  473 	inc	sp
-   0255 CDr3Er01            474 	call	_coord_2d_to_1d
-   0258 E8 02               475 	add	sp, #2
-   025A C1                  476 	pop	bc
-   025B F8 00               477 	ldhl	sp,#0
-   025D 73                  478 	ld	(hl),e
-                            479 ;Title_screen.c:121: graph_x = x * 4 + 5;
-   025E 78                  480 	ld	a,b
-   025F 87                  481 	add	a, a
-   0260 87                  482 	add	a, a
-   0261 C6 05               483 	add	a, #0x05
-   0263 57                  484 	ld	d,a
-                            485 ;Title_screen.c:123: gotoxy(graph_x, graph_y);
-   0264 C5                  486 	push	bc
-   0265 F8 05               487 	ldhl	sp,#5
-   0267 7E                  488 	ld	a,(hl)
-   0268 F5                  489 	push	af
-   0269 33                  490 	inc	sp
-   026A D5                  491 	push	de
-   026B 33                  492 	inc	sp
-   026C CDr00r00            493 	call	_gotoxy
-   026F E8 02               494 	add	sp, #2
-   0271 C1                  495 	pop	bc
-                            496 ;Title_screen.c:124: setchar(GAME_BOARD[i]);
-   0272 11r00r00            497 	ld	de,#_GAME_BOARD
-   0275 F8 00               498 	ldhl	sp,#0
-   0277 6E                  499 	ld	l,(hl)
-   0278 26 00               500 	ld	h,#0x00
-   027A 19                  501 	add	hl,de
-   027B 7D                  502 	ld	a,l
-   027C 54                  503 	ld	d,h
-   027D F8 01               504 	ldhl	sp,#1
-   027F 22                  505 	ld	(hl+),a
-   0280 72                  506 	ld	(hl),d
-   0281 2B                  507 	dec	hl
-   0282 5E                  508 	ld	e,(hl)
-   0283 23                  509 	inc	hl
-   0284 56                  510 	ld	d,(hl)
-   0285 1A                  511 	ld	a,(de)
-   0286 C5                  512 	push	bc
-   0287 F5                  513 	push	af
-   0288 33                  514 	inc	sp
-   0289 CDr00r00            515 	call	_setchar
-   028C 33                  516 	inc	sp
-   028D C1                  517 	pop	bc
-                            518 ;Title_screen.c:125: x++;
-   028E 04                  519 	inc	b
-   028F C3r49r02            520 	jp	00101$
-   0292                     521 00112$:
-                            522 ;Title_screen.c:127: y++;
-   0292 0C                  523 	inc	c
-   0293 C3r3Cr02            524 	jp	00104$
-   0296                     525 00107$:
-   0296 E8 04               526 	add	sp, #4
-   0298 C9                  527 	ret
-                            528 ;Title_screen.c:132: void	main(void)
-                            529 ;	---------------------------------
-                            530 ; Function main
-                            531 ; ---------------------------------
-   0299                     532 _main::
-                            533 ;Title_screen.c:134: title_screen(); // Title screen
-   0299 CDr26r00            534 	call	_title_screen
-                            535 ;Title_screen.c:135: waitpad(J_START); // Wait for start to be pressed
-   029C 3E 80               536 	ld	a,#0x80
-   029E F5                  537 	push	af
-   029F 33                  538 	inc	sp
-   02A0 CDr00r00            539 	call	_waitpad
-   02A3 33                  540 	inc	sp
-                            541 ;Title_screen.c:136: clear_screen(); // clear tiles
-   02A4 CDr00r00            542 	call	_clear_screen
-                            543 ;Title_screen.c:137: init(); // Init varaiables for the game
-   02A7 CDr4Ar01            544 	call	_init
-                            545 ;Title_screen.c:138: draw_board(); // Draw the game board
-   02AA CDr6Cr00            546 	call	_draw_board
-                            547 ;Title_screen.c:139: draw_cursor('!');
-   02AD 3E 21               548 	ld	a,#0x21
-   02AF F5                  549 	push	af
-   02B0 33                  550 	inc	sp
-   02B1 CDr72r01            551 	call	_draw_cursor
-   02B4 33                  552 	inc	sp
-                            553 ;Title_screen.c:140: GAME_BOARD[0] = PLAYER;
-   02B5 21r00r00            554 	ld	hl,#_GAME_BOARD
-   02B8 36 78               555 	ld	(hl),#0x78
-                            556 ;Title_screen.c:141: GAME_BOARD[1] = COMPUTER;
-   02BA 21r01r00            557 	ld	hl,#(_GAME_BOARD + 0x0001)
-   02BD 36 6F               558 	ld	(hl),#0x6F
-                            559 ;Title_screen.c:142: update();
-   02BF CDr36r02            560 	call	_update
-                            561 ;Title_screen.c:143: waitpad(J_START);
-   02C2 3E 80               562 	ld	a,#0x80
-   02C4 F5                  563 	push	af
-   02C5 33                  564 	inc	sp
-   02C6 CDr00r00            565 	call	_waitpad
-   02C9 33                  566 	inc	sp
-                            567 ;Title_screen.c:144: GAME_BOARD[1] = EMPTY;
-   02CA 21r01r00            568 	ld	hl,#(_GAME_BOARD + 0x0001)
-   02CD 36 20               569 	ld	(hl),#0x20
-                            570 ;Title_screen.c:145: update();
-   02CF C3r36r02            571 	jp	_update
-                            572 	.area _CODE
-                            573 	.area _CABS (ABS)
+   017C 0A                  292 	.db 0x0A
+   017D 00                  293 	.db 0x00
+                            294 ;Title_screen.c:92: void	update(void)
+                            295 ;	---------------------------------
+                            296 ; Function update
+                            297 ; ---------------------------------
+   017E                     298 _update::
+   017E E8 FC               299 	add	sp, #-4
+                            300 ;Title_screen.c:100: for (y = 0 ; y < 3 ; y++)
+   0180 06 00               301 	ld	b,#0x00
+                            302 ;Title_screen.c:102: for (x = 0 ; x < 3 ; x++)
+   0182                     303 00109$:
+   0182 78                  304 	ld	a,b
+   0183 87                  305 	add	a, a
+   0184 87                  306 	add	a, a
+   0185 C6 05               307 	add	a, #0x05
+   0187 F8 03               308 	ldhl	sp,#3
+   0189 77                  309 	ld	(hl),a
+   018A 0E 00               310 	ld	c,#0x00
+   018C                     311 00103$:
+                            312 ;Title_screen.c:104: i = coord_2d_to_1d(x, y);
+   018C C5                  313 	push	bc
+   018D C5                  314 	push	bc
+   018E 33                  315 	inc	sp
+   018F 79                  316 	ld	a,c
+   0190 F5                  317 	push	af
+   0191 33                  318 	inc	sp
+   0192 CDr26r00            319 	call	_coord_2d_to_1d
+   0195 E8 02               320 	add	sp, #2
+   0197 C1                  321 	pop	bc
+   0198 F8 00               322 	ldhl	sp,#0
+   019A 73                  323 	ld	(hl),e
+                            324 ;Title_screen.c:105: graph_x = 4 + x * 4 + 1;
+   019B 79                  325 	ld	a,c
+   019C 87                  326 	add	a, a
+   019D 87                  327 	add	a, a
+   019E C6 05               328 	add	a, #0x05
+   01A0 57                  329 	ld	d,a
+                            330 ;Title_screen.c:107: gotoxy(graph_x, graph_y);
+   01A1 C5                  331 	push	bc
+   01A2 F8 05               332 	ldhl	sp,#5
+   01A4 7E                  333 	ld	a,(hl)
+   01A5 F5                  334 	push	af
+   01A6 33                  335 	inc	sp
+   01A7 D5                  336 	push	de
+   01A8 33                  337 	inc	sp
+   01A9 CDr00r00            338 	call	_gotoxy
+   01AC E8 02               339 	add	sp, #2
+   01AE C1                  340 	pop	bc
+                            341 ;Title_screen.c:108: setchar(GAME_BOARD[i]);
+   01AF 11r00r00            342 	ld	de,#_GAME_BOARD
+   01B2 F8 00               343 	ldhl	sp,#0
+   01B4 6E                  344 	ld	l,(hl)
+   01B5 26 00               345 	ld	h,#0x00
+   01B7 19                  346 	add	hl,de
+   01B8 7D                  347 	ld	a,l
+   01B9 54                  348 	ld	d,h
+   01BA F8 01               349 	ldhl	sp,#1
+   01BC 22                  350 	ld	(hl+),a
+   01BD 72                  351 	ld	(hl),d
+   01BE 2B                  352 	dec	hl
+   01BF 5E                  353 	ld	e,(hl)
+   01C0 23                  354 	inc	hl
+   01C1 56                  355 	ld	d,(hl)
+   01C2 1A                  356 	ld	a,(de)
+   01C3 C5                  357 	push	bc
+   01C4 F5                  358 	push	af
+   01C5 33                  359 	inc	sp
+   01C6 CDr00r00            360 	call	_setchar
+   01C9 33                  361 	inc	sp
+   01CA C1                  362 	pop	bc
+                            363 ;Title_screen.c:102: for (x = 0 ; x < 3 ; x++)
+   01CB 0C                  364 	inc	c
+   01CC 79                  365 	ld	a,c
+   01CD D6 03               366 	sub	a, #0x03
+   01CF DAr8Cr01            367 	jp	C,00103$
+                            368 ;Title_screen.c:100: for (y = 0 ; y < 3 ; y++)
+   01D2 04                  369 	inc	b
+   01D3 78                  370 	ld	a,b
+   01D4 D6 03               371 	sub	a, #0x03
+   01D6 DAr82r01            372 	jp	C,00109$
+   01D9 E8 04               373 	add	sp, #4
+   01DB C9                  374 	ret
+                            375 ;Title_screen.c:113: void	draw_cursor(UINT8 cursor_char)
+                            376 ;	---------------------------------
+                            377 ; Function draw_cursor
+                            378 ; ---------------------------------
+   01DC                     379 _draw_cursor::
+   01DC E8 F7               380 	add	sp, #-9
+                            381 ;Title_screen.c:115: UINT8 graph_x = GAME_CURSOR_X * 4 + 5;
+   01DE 21r09r00            382 	ld	hl,#_GAME_CURSOR_X
+   01E1 7E                  383 	ld	a,(hl)
+   01E2 87                  384 	add	a, a
+   01E3 87                  385 	add	a, a
+   01E4 C6 05               386 	add	a, #0x05
+   01E6 F8 00               387 	ldhl	sp,#0
+   01E8 77                  388 	ld	(hl),a
+                            389 ;Title_screen.c:116: UINT8 graph_y = GAME_CURSOR_Y * 4 + 5;
+   01E9 21r0Ar00            390 	ld	hl,#_GAME_CURSOR_Y
+   01EC 7E                  391 	ld	a,(hl)
+   01ED 87                  392 	add	a, a
+   01EE 87                  393 	add	a, a
+   01EF C6 05               394 	add	a, #0x05
+   01F1 F8 01               395 	ldhl	sp,#1
+   01F3 77                  396 	ld	(hl),a
+                            397 ;Title_screen.c:120: for (cy = graph_y - 1 ; cy <= graph_y + 1 ; cy ++)
+   01F4 7E                  398 	ld	a,(hl)
+   01F5 C6 FF               399 	add	a,#0xFF
+   01F7 F8 06               400 	ldhl	sp,#6
+   01F9 77                  401 	ld	(hl),a
+   01FA F8 00               402 	ldhl	sp,#0
+   01FC 7E                  403 	ld	a,(hl)
+   01FD C6 FF               404 	add	a,#0xFF
+   01FF 23                  405 	inc	hl
+   0200 23                  406 	inc	hl
+   0201 77                  407 	ld	(hl),a
+   0202                     408 00110$:
+   0202 F8 01               409 	ldhl	sp,#1
+   0204 4E                  410 	ld	c,(hl)
+   0205 06 00               411 	ld	b,#0x00
+   0207 03                  412 	inc	bc
+   0208 23                  413 	inc	hl
+   0209 23                  414 	inc	hl
+   020A 71                  415 	ld	(hl),c
+   020B 23                  416 	inc	hl
+   020C 70                  417 	ld	(hl),b
+   020D 23                  418 	inc	hl
+   020E 23                  419 	inc	hl
+   020F 46                  420 	ld	b,(hl)
+   0210 0E 00               421 	ld	c,#0x00
+   0212 F8 03               422 	ldhl	sp,#3
+   0214 7E                  423 	ld	a, (hl)
+   0215 90                  424 	sub	a, b
+   0216 23                  425 	inc	hl
+   0217 7E                  426 	ld	a, (hl)
+   0218 99                  427 	sbc	a, c
+   0219 56                  428 	ld	d, (hl)
+   021A 79                  429 	ld	a,c
+   021B 5F                  430 	ld	e, a
+   021C CB 7B               431 	bit	7, e
+   021E 28 07               432 	jr	Z,00136$
+   0220 CB 7A               433 	bit	7, d
+   0222 20 08               434 	jr	NZ,00137$
+   0224 BF                  435 	cp	a, a
+   0225 18 05               436 	jr	00137$
+   0227                     437 00136$:
+   0227 CB 7A               438 	bit	7, d
+   0229 28 01               439 	jr	Z,00137$
+   022B 37                  440 	scf
+   022C                     441 00137$:
+   022C DArA0r02            442 	jp	C,00112$
+                            443 ;Title_screen.c:122: for (cx = graph_x - 1 ; cx <= graph_x + 1 ; cx++)
+   022F E5                  444 	push	hl
+   0230 F8 04               445 	ldhl	sp,#4
+   0232 2A                  446 	ld	a,(hl+)
+   0233 77                  447 	ld	(hl),a
+   0234 E1                  448 	pop	hl
+   0235 F8 01               449 	ldhl	sp,#1
+   0237 7E                  450 	ld	a,(hl)
+   0238 F8 06               451 	ldhl	sp,#6
+   023A 96                  452 	sub	a, (hl)
+   023B 20 04               453 	jr	NZ,00138$
+   023D 3E 01               454 	ld	a,#0x01
+   023F 18 01               455 	jr	00139$
+   0241                     456 00138$:
+   0241 AF                  457 	xor	a,a
+   0242                     458 00139$:
+   0242 F8 05               459 	ldhl	sp,#5
+   0244 77                  460 	ld	(hl),a
+   0245                     461 00108$:
+   0245 F8 00               462 	ldhl	sp,#0
+   0247 4E                  463 	ld	c,(hl)
+   0248 06 00               464 	ld	b,#0x00
+   024A 03                  465 	inc	bc
+   024B F8 03               466 	ldhl	sp,#3
+   024D 7E                  467 	ld	a,(hl)
+   024E F8 07               468 	ldhl	sp,#7
+   0250 22                  469 	ld	(hl+),a
+   0251 36 00               470 	ld	(hl),#0x00
+   0253 2B                  471 	dec	hl
+   0254 79                  472 	ld	a,c
+   0255 96                  473 	sub	a, (hl)
+   0256 23                  474 	inc	hl
+   0257 78                  475 	ld	a,b
+   0258 9E                  476 	sbc	a, (hl)
+   0259 78                  477 	ld	a,b
+   025A 57                  478 	ld	d, a
+   025B 5E                  479 	ld	e, (hl)
+   025C CB 7B               480 	bit	7, e
+   025E 28 07               481 	jr	Z,00140$
+   0260 CB 7A               482 	bit	7, d
+   0262 20 08               483 	jr	NZ,00141$
+   0264 BF                  484 	cp	a, a
+   0265 18 05               485 	jr	00141$
+   0267                     486 00140$:
+   0267 CB 7A               487 	bit	7, d
+   0269 28 01               488 	jr	Z,00141$
+   026B 37                  489 	scf
+   026C                     490 00141$:
+   026C 38 2C               491 	jr	C,00111$
+                            492 ;Title_screen.c:124: if (cx == graph_x && cy == graph_y)
+   026E F8 00               493 	ldhl	sp,#0
+   0270 7E                  494 	ld	a,(hl)
+   0271 F8 03               495 	ldhl	sp,#3
+   0273 96                  496 	sub	a, (hl)
+   0274 20 06               497 	jr	NZ,00102$
+   0276 F8 05               498 	ldhl	sp,#5
+   0278 7E                  499 	ld	a,(hl)
+   0279 B7                  500 	or	a, a
+   027A 20 18               501 	jr	NZ,00104$
+                            502 ;Title_screen.c:125: continue ;
+   027C                     503 00102$:
+                            504 ;Title_screen.c:126: gotoxy(cx, cy);
+   027C F8 06               505 	ldhl	sp,#6
+   027E 7E                  506 	ld	a,(hl)
+   027F F5                  507 	push	af
+   0280 33                  508 	inc	sp
+   0281 F8 04               509 	ldhl	sp,#4
+   0283 7E                  510 	ld	a,(hl)
+   0284 F5                  511 	push	af
+   0285 33                  512 	inc	sp
+   0286 CDr00r00            513 	call	_gotoxy
+   0289 E8 02               514 	add	sp, #2
+                            515 ;Title_screen.c:127: setchar(cursor_char);
+   028B F8 0B               516 	ldhl	sp,#11
+   028D 7E                  517 	ld	a,(hl)
+   028E F5                  518 	push	af
+   028F 33                  519 	inc	sp
+   0290 CDr00r00            520 	call	_setchar
+   0293 33                  521 	inc	sp
+   0294                     522 00104$:
+                            523 ;Title_screen.c:122: for (cx = graph_x - 1 ; cx <= graph_x + 1 ; cx++)
+   0294 F8 03               524 	ldhl	sp,#3
+   0296 34                  525 	inc	(hl)
+   0297 C3r45r02            526 	jp	00108$
+   029A                     527 00111$:
+                            528 ;Title_screen.c:120: for (cy = graph_y - 1 ; cy <= graph_y + 1 ; cy ++)
+   029A F8 06               529 	ldhl	sp,#6
+   029C 34                  530 	inc	(hl)
+   029D C3r02r02            531 	jp	00110$
+   02A0                     532 00112$:
+   02A0 E8 09               533 	add	sp, #9
+   02A2 C9                  534 	ret
+                            535 ;Title_screen.c:133: void	player_play(void)
+                            536 ;	---------------------------------
+                            537 ; Function player_play
+                            538 ; ---------------------------------
+   02A3                     539 _player_play::
+                            540 ;Title_screen.c:138: while (1)
+   02A3                     541 00118$:
+                            542 ;Title_screen.c:140: draw_cursor('/');
+   02A3 3E 2F               543 	ld	a,#0x2F
+   02A5 F5                  544 	push	af
+   02A6 33                  545 	inc	sp
+   02A7 CDrDCr01            546 	call	_draw_cursor
+   02AA 33                  547 	inc	sp
+                            548 ;Title_screen.c:141: key = waitpad(J_UP | J_DOWN | J_LEFT | J_RIGHT | J_A);
+   02AB 3E 1F               549 	ld	a,#0x1F
+   02AD F5                  550 	push	af
+   02AE 33                  551 	inc	sp
+   02AF CDr00r00            552 	call	_waitpad
+   02B2 33                  553 	inc	sp
+                            554 ;Title_screen.c:142: draw_cursor(' ');
+   02B3 D5                  555 	push	de
+   02B4 3E 20               556 	ld	a,#0x20
+   02B6 F5                  557 	push	af
+   02B7 33                  558 	inc	sp
+   02B8 CDrDCr01            559 	call	_draw_cursor
+   02BB 33                  560 	inc	sp
+   02BC D1                  561 	pop	de
+                            562 ;Title_screen.c:144: if (key == J_UP && GAME_CURSOR_Y != 0)
+   02BD 43                  563 	ld	b,e
+   02BE 0E 00               564 	ld	c,#0x00
+   02C0 78                  565 	ld	a,b
+   02C1 D6 04               566 	sub	a, #0x04
+   02C3 20 0C               567 	jr	NZ,00102$
+   02C5 79                  568 	ld	a,c
+   02C6 B7                  569 	or	a, a
+   02C7 20 08               570 	jr	NZ,00102$
+   02C9 21r0Ar00            571 	ld	hl,#_GAME_CURSOR_Y
+   02CC 7E                  572 	ld	a,(hl)
+   02CD B7                  573 	or	a, a
+   02CE 28 01               574 	jr	Z,00102$
+                            575 ;Title_screen.c:145: GAME_CURSOR_Y--;
+   02D0 35                  576 	dec	(hl)
+   02D1                     577 00102$:
+                            578 ;Title_screen.c:146: if (key == J_DOWN && GAME_CURSOR_Y != 2)
+   02D1 78                  579 	ld	a,b
+   02D2 D6 08               580 	sub	a, #0x08
+   02D4 20 10               581 	jr	NZ,00105$
+   02D6 79                  582 	ld	a,c
+   02D7 B7                  583 	or	a, a
+   02D8 20 0C               584 	jr	NZ,00105$
+   02DA 21r0Ar00            585 	ld	hl,#_GAME_CURSOR_Y
+   02DD 7E                  586 	ld	a,(hl)
+   02DE D6 02               587 	sub	a, #0x02
+   02E0 28 04               588 	jr	Z,00105$
+                            589 ;Title_screen.c:147: GAME_CURSOR_Y++;
+   02E2 21r0Ar00            590 	ld	hl,#_GAME_CURSOR_Y
+   02E5 34                  591 	inc	(hl)
+   02E6                     592 00105$:
+                            593 ;Title_screen.c:148: if (key == J_LEFT && GAME_CURSOR_X != 0)
+   02E6 78                  594 	ld	a,b
+   02E7 D6 02               595 	sub	a, #0x02
+   02E9 20 0C               596 	jr	NZ,00108$
+   02EB 79                  597 	ld	a,c
+   02EC B7                  598 	or	a, a
+   02ED 20 08               599 	jr	NZ,00108$
+   02EF 21r09r00            600 	ld	hl,#_GAME_CURSOR_X
+   02F2 7E                  601 	ld	a,(hl)
+   02F3 B7                  602 	or	a, a
+   02F4 28 01               603 	jr	Z,00108$
+                            604 ;Title_screen.c:149: GAME_CURSOR_X--;
+   02F6 35                  605 	dec	(hl)
+   02F7                     606 00108$:
+                            607 ;Title_screen.c:150: if (key == J_RIGHT && GAME_CURSOR_X != 2)
+   02F7 78                  608 	ld	a,b
+   02F8 3D                  609 	dec	a
+   02F9 20 10               610 	jr	NZ,00111$
+   02FB 79                  611 	ld	a,c
+   02FC B7                  612 	or	a, a
+   02FD 20 0C               613 	jr	NZ,00111$
+   02FF 21r09r00            614 	ld	hl,#_GAME_CURSOR_X
+   0302 7E                  615 	ld	a,(hl)
+   0303 D6 02               616 	sub	a, #0x02
+   0305 28 04               617 	jr	Z,00111$
+                            618 ;Title_screen.c:151: GAME_CURSOR_X++;
+   0307 21r09r00            619 	ld	hl,#_GAME_CURSOR_X
+   030A 34                  620 	inc	(hl)
+   030B                     621 00111$:
+                            622 ;Title_screen.c:152: if (key == J_A)
+   030B 78                  623 	ld	a,b
+   030C D6 10               624 	sub	a, #0x10
+   030E 20 28               625 	jr	NZ,00116$
+   0310 79                  626 	ld	a,c
+   0311 B7                  627 	or	a, a
+   0312 20 24               628 	jr	NZ,00116$
+                            629 ;Title_screen.c:154: i = coord_2d_to_1d(GAME_CURSOR_X, GAME_CURSOR_Y);
+   0314 21r0Ar00            630 	ld	hl,#_GAME_CURSOR_Y
+   0317 7E                  631 	ld	a,(hl)
+   0318 F5                  632 	push	af
+   0319 33                  633 	inc	sp
+   031A 21r09r00            634 	ld	hl,#_GAME_CURSOR_X
+   031D 7E                  635 	ld	a,(hl)
+   031E F5                  636 	push	af
+   031F 33                  637 	inc	sp
+   0320 CDr26r00            638 	call	_coord_2d_to_1d
+   0323 E8 02               639 	add	sp, #2
+   0325 43                  640 	ld	b,e
+                            641 ;Title_screen.c:155: if (GAME_BOARD[i] == EMPTY)
+   0326 3Er00               642 	ld	a,#<(_GAME_BOARD)
+   0328 80                  643 	add	a, b
+   0329 4F                  644 	ld	c,a
+   032A 3Es00               645 	ld	a,#>(_GAME_BOARD)
+   032C CE 00               646 	adc	a, #0x00
+   032E 47                  647 	ld	b,a
+   032F 0A                  648 	ld	a,(bc)
+   0330 D6 20               649 	sub	a, #0x20
+   0332 20 04               650 	jr	NZ,00116$
+                            651 ;Title_screen.c:157: GAME_BOARD[i] = PLAYER;
+   0334 3E 78               652 	ld	a,#0x78
+   0336 02                  653 	ld	(bc),a
+                            654 ;Title_screen.c:158: break ;
+   0337 C9                  655 	ret
+   0338                     656 00116$:
+                            657 ;Title_screen.c:161: waitpadup();
+   0338 CDr00r00            658 	call	_waitpadup
+   033B C3rA3r02            659 	jp	00118$
+   033E C9                  660 	ret
+                            661 ;Title_screen.c:165: void	game(void)
+                            662 ;	---------------------------------
+                            663 ; Function game
+                            664 ; ---------------------------------
+   033F                     665 _game::
+                            666 ;Title_screen.c:167: init();
+   033F CDr82r00            667 	call	_init
+                            668 ;Title_screen.c:168: draw_board();
+   0342 CDrA9r00            669 	call	_draw_board
+                            670 ;Title_screen.c:169: while(1)
+   0345                     671 00102$:
+                            672 ;Title_screen.c:171: player_play();
+   0345 CDrA3r02            673 	call	_player_play
+                            674 ;Title_screen.c:172: update();
+   0348 CDr7Er01            675 	call	_update
+   034B 18 F8               676 	jr	00102$
+   034D C9                  677 	ret
+                            678 ;Title_screen.c:175: void	main(void)
+                            679 ;	---------------------------------
+                            680 ; Function main
+                            681 ; ---------------------------------
+   034E                     682 _main::
+                            683 ;Title_screen.c:177: title_screen();
+   034E CDr32r00            684 	call	_title_screen
+                            685 ;Title_screen.c:178: game();
+   0351 C3r3Fr03            686 	jp	_game
+                            687 	.area _CODE
+                            688 	.area _CABS (ABS)

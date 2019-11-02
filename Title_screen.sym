@@ -10,24 +10,27 @@ Symbol Table
   1 _GAME_BOARD                                                    0000 GR
   1 _GAME_CURSOR_X                                                 0009 GR
   1 _GAME_CURSOR_Y                                                 000A GR
-  0 ___str_0                                                       004E R
-  0 ___str_1                                                       005C R
-  0 ___str_2                                                       00FD R
-  0 ___str_3                                                       0109 R
-  0 ___str_4                                                       011C R
-  0 ___str_5                                                       012D R
+  0 ___str_0                                                       0064 R
+  0 ___str_1                                                       0072 R
+  0 ___str_2                                                       013D R
+  0 ___str_3                                                       0149 R
+  0 ___str_4                                                       015C R
+  0 ___str_5                                                       016D R
   0 _clear_screen                                                  0000 GR
-  0 _coord_2d_to_1d                                                013E GR
-  0 _draw_board                                                    006C GR
-  0 _draw_cursor                                                   0172 GR
+  0 _coord_2d_to_1d                                                0026 GR
+  0 _draw_board                                                    00A9 GR
+  0 _draw_cursor                                                   01DC GR
+  0 _game                                                          033F GR
     _gotoxy                                                        **** GX
-  0 _init                                                          014A GR
-  0 _main                                                          0299 GR
+  0 _init                                                          0082 GR
+  0 _main                                                          034E GR
+  0 _player_play                                                   02A3 GR
     _printf                                                        **** GX
     _setchar                                                       **** GX
-  0 _title_screen                                                  0026 GR
-  0 _update                                                        0236 GR
+  0 _title_screen                                                  0032 GR
+  0 _update                                                        017E GR
     _waitpad                                                       **** GX
+    _waitpadup                                                     **** GX
 
 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy Z80-like CPU), page 2.
@@ -35,7 +38,7 @@ Hexadecimal [16-Bits]
 
 Area Table
 
-   0 _CODE                                      size  2D2   flags    0
+   0 _CODE                                      size  354   flags    0
    1 _DATA                                      size    B   flags    0
    2 _DABS                                      size    0   flags    8
    3 _HOME                                      size    0   flags    0
