@@ -6,7 +6,7 @@
 /*   By: vdescham <vdescham@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/02 13:58:21 by vdescham          #+#    #+#             */
-/*   Updated: 2019/11/02 19:14:54 by hugovernh        ###   ########.fr       */
+/*   Updated: 2019/11/02 19:22:34 by vdescham         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,12 +193,15 @@ void computer_play(void)
 	UINT8 last_empty_cell;
 	INT8 loose_cell = -1;
 
-	for (y = 0 ; y < 3 ; y += 1) {
+	for (y = 0 ; y < 3 ; y += 1)
+	{
 		player_score = 0;
 		computer_score = 0;
-		for (x = 0 ; x < 3 ; x += 1) {
+		for (x = 0 ; x < 3 ; x += 1)
+		{
 			i = coord_2d_to_1d(x, y);
-			switch (GAME_BOARD[i]) {
+			switch (GAME_BOARD[i])
+			{
 				case EMPTY:
 					last_empty_cell = i;
 					break;
@@ -210,13 +213,13 @@ void computer_play(void)
 					break;
 			}
 		}
-		if (computer_score == 2 && player_score == 0) {
+		if (computer_score == 2 && player_score == 0)
+		{
 			GAME_BOARD[last_empty_cell] = PLAYER2;
 			return;
 		}
-		if (player_score == 2 && computer_score == 0) {
+		if (player_score == 2 && computer_score == 0)
 			loose_cell = last_empty_cell;
-		}
 	}
 
 	if (loose_cell != -1) {
@@ -295,7 +298,7 @@ void	select_mode()
 	while (1)
 	{
 		mode_screen(mode);
-		key = waitpad(J_A | J_B | J_UP | J_DOWN);
+		key = waitpad(J_A | J_B | J_START | J_UP | J_DOWN);
 		if (key == J_B)
 		{
 			title_screen();
@@ -311,7 +314,7 @@ void	select_mode()
 			mode--;
 			mode_screen(mode);
 		}
-		if (key == J_A)
+		if (key == J_A || key == J_START)
 		{
 			switch (mode)
 			{

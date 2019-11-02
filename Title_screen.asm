@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ; File Created by SDCC : free open source ANSI-C Compiler
 ; Version 3.5.0 #9253 (Apr  3 2018) (Linux)
-; This file was generated Sat Nov  2 18:58:13 2019
+; This file was generated Sat Nov  2 19:19:48 2019
 ;--------------------------------------------------------
 	.module Title_screen
 	.optsdcc -mgbz80
@@ -13,7 +13,9 @@
 	.globl _select_mode
 	.globl _mode_screen
 	.globl _title_screen
+	.globl _game2
 	.globl _game
+	.globl _computer_play
 	.globl _player2_play
 	.globl _player_play
 	.globl _draw_cursor
@@ -744,61 +746,252 @@ _player2_play::
 	call	_waitpadup
 	jp	00118$
 	ret
-;Title_screen.c:186: void	game(void)
+;Title_screen.c:186: void computer_play(void)
+;	---------------------------------
+; Function computer_play
+; ---------------------------------
+_computer_play::
+	add	sp, #-11
+;Title_screen.c:194: INT8 loose_cell = -1;
+	ldhl	sp,#2
+	ld	(hl),#0xFF
+;Title_screen.c:196: for (y = 0 ; y < 3 ; y += 1) {
+	ldhl	sp,#5
+	ld	(hl),#0x00
+;Title_screen.c:199: for (x = 0 ; x < 3 ; x += 1) {
+00124$:
+	ldhl	sp,#3
+	ld	(hl),#0x00
+	ldhl	sp,#6
+	ld	(hl),#0x00
+	dec	hl
+	dec	hl
+	ld	(hl),#0x00
+00115$:
+;Title_screen.c:200: i = coord_2d_to_1d(x, y);
+	push	bc
+	ldhl	sp,#7
+	ld	a,(hl)
+	push	af
+	inc	sp
+	dec	hl
+	ld	a,(hl)
+	push	af
+	inc	sp
+	call	_coord_2d_to_1d
+	add	sp, #2
+	pop	bc
+	ldhl	sp,#0
+	ld	(hl),e
+;Title_screen.c:201: switch (GAME_BOARD[i]) {
+	ld	de,#_GAME_BOARD
+	ld	l,(hl)
+	ld	h,#0x00
+	add	hl,de
+	ld	a,l
+	ld	d,h
+	ldhl	sp,#7
+	ld	(hl+),a
+	ld	(hl),d
+	dec	hl
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+	ld	a,(de)
+	ld	d,a
+	sub	a, #0x20
+	jr	Z,00101$
+	ld	a,d
+	cp	a,#0x6F
+	jr	Z,00103$
+	sub	a, #0x78
+	jr	Z,00102$
+	jr	00116$
+;Title_screen.c:202: case EMPTY:
+00101$:
+;Title_screen.c:203: last_empty_cell = i;
+	ldhl	sp,#0
+	ld	c,(hl)
+;Title_screen.c:204: break;
+	jr	00116$
+;Title_screen.c:205: case PLAYER:
+00102$:
+;Title_screen.c:206: player_score += 1;
+	ldhl	sp,#6
+	inc	(hl)
+;Title_screen.c:207: break;
+	jr	00116$
+;Title_screen.c:208: case PLAYER2:
+00103$:
+;Title_screen.c:209: computer_score += 1;
+	ldhl	sp,#3
+	inc	(hl)
+;Title_screen.c:211: }
+00116$:
+;Title_screen.c:199: for (x = 0 ; x < 3 ; x += 1) {
+	ldhl	sp,#4
+	inc	(hl)
+	ld	a,(hl)
+	sub	a, #0x03
+	jp	C,00115$
+;Title_screen.c:213: if (computer_score == 2 && player_score == 0) {
+	push	hl
+	dec	hl
+	ld	a,(hl)
+	ldhl	sp,#9
+	ld	(hl),a
+	pop	hl
+	ldhl	sp,#6
+	ld	b,(hl)
+;Title_screen.c:214: GAME_BOARD[last_empty_cell] = PLAYER2;
+	ld	de,#_GAME_BOARD
+	ld	l,c
+	ld	h,#0x00
+	add	hl,de
+	ld	a,l
+	ld	d,h
+	ldhl	sp,#9
+	ld	(hl+),a
+	ld	(hl),d
+;Title_screen.c:213: if (computer_score == 2 && player_score == 0) {
+	ldhl	sp,#3
+	ld	a,(hl)
+	sub	a, #0x02
+	jr	NZ,00107$
+	ldhl	sp,#6
+	ld	a,(hl)
+	or	a, a
+	jr	NZ,00107$
+;Title_screen.c:214: GAME_BOARD[last_empty_cell] = PLAYER2;
+	ldhl	sp,#9
+	ld	a,(hl+)
+	ld	h,(hl)
+	ld	l,a
+	ld	(hl),#0x6F
+;Title_screen.c:215: return;
+	jp	00119$
+00107$:
+;Title_screen.c:217: if (player_score == 2 && computer_score == 0) {
+	ld	a,b
+	sub	a, #0x02
+	jr	NZ,00118$
+	ldhl	sp,#7
+	ld	a,(hl)
+	or	a, a
+	jr	NZ,00118$
+;Title_screen.c:218: loose_cell = last_empty_cell;
+	ldhl	sp,#2
+	ld	(hl),c
+00118$:
+;Title_screen.c:196: for (y = 0 ; y < 3 ; y += 1) {
+	ldhl	sp,#5
+	inc	(hl)
+	ld	a,(hl)
+	sub	a, #0x03
+	jp	C,00124$
+;Title_screen.c:222: if (loose_cell != -1) {
+	ldhl	sp,#2
+	ld	a,(hl)
+	inc	a
+	jr	Z,00114$
+;Title_screen.c:223: GAME_BOARD[loose_cell] = PLAYER2;
+	ld	de,#_GAME_BOARD
+	ldhl	sp,#2
+	ld	l,(hl)
+	ld	h,#0x00
+	add	hl,de
+	ld	c,l
+	ld	b,h
+	ld	a,#0x6F
+	ld	(bc),a
+;Title_screen.c:224: return;
+	jr	00119$
+00114$:
+;Title_screen.c:227: GAME_BOARD[last_empty_cell] = PLAYER2;
+	ldhl	sp,#9
+	ld	a,(hl+)
+	ld	h,(hl)
+	ld	l,a
+	ld	(hl),#0x6F
+00119$:
+	add	sp, #11
+	ret
+;Title_screen.c:230: void	game(void)
 ;	---------------------------------
 ; Function game
 ; ---------------------------------
 _game::
-;Title_screen.c:188: init();
+;Title_screen.c:232: init();
 	call	_init
-;Title_screen.c:189: draw_board();
+;Title_screen.c:233: draw_board();
 	call	_draw_board
-;Title_screen.c:190: while(1)
+;Title_screen.c:234: while(1)
 00102$:
-;Title_screen.c:192: player_play();
+;Title_screen.c:236: player_play();
 	call	_player_play
-;Title_screen.c:193: update();
+;Title_screen.c:237: update();
 	call	_update
-;Title_screen.c:194: player2_play();
-	call	_player2_play
-;Title_screen.c:195: update();
+;Title_screen.c:238: computer_play();
+	call	_computer_play
+;Title_screen.c:239: update();
 	call	_update
 	jr	00102$
 	ret
-;Title_screen.c:199: void	title_screen()
+;Title_screen.c:243: void	game2(void)
+;	---------------------------------
+; Function game2
+; ---------------------------------
+_game2::
+;Title_screen.c:245: init();
+	call	_init
+;Title_screen.c:246: draw_board();
+	call	_draw_board
+;Title_screen.c:247: while(1)
+00102$:
+;Title_screen.c:249: player_play();
+	call	_player_play
+;Title_screen.c:250: update();
+	call	_update
+;Title_screen.c:251: player2_play();
+	call	_player2_play
+;Title_screen.c:252: update();
+	call	_update
+	jr	00102$
+	ret
+;Title_screen.c:256: void	title_screen()
 ;	---------------------------------
 ; Function title_screen
 ; ---------------------------------
 _title_screen::
-;Title_screen.c:201: clear_screen();
+;Title_screen.c:258: clear_screen();
 	call	_clear_screen
-;Title_screen.c:202: gotoxy(4, 5);
+;Title_screen.c:259: gotoxy(4, 5);
 	ld	hl,#0x0504
 	push	hl
 	call	_gotoxy
 	add	sp, #2
-;Title_screen.c:203: printf("Tic Tac Toe !");
+;Title_screen.c:260: printf("Tic Tac Toe !");
 	ld	de,#___str_4
 	push	de
 	call	_printf
 	add	sp, #2
-;Title_screen.c:204: gotoxy(3, 15);
+;Title_screen.c:261: gotoxy(3, 15);
 	ld	hl,#0x0F03
 	push	hl
 	call	_gotoxy
 	add	sp, #2
-;Title_screen.c:205: printf("- PRESS START -");
+;Title_screen.c:262: printf("- PRESS START -");
 	ld	de,#___str_5
 	push	de
 	call	_printf
 	add	sp, #2
-;Title_screen.c:206: waitpad(J_START);
+;Title_screen.c:263: waitpad(J_START);
 	ld	a,#0x80
 	push	af
 	inc	sp
 	call	_waitpad
 	inc	sp
-;Title_screen.c:207: waitpadup();
+;Title_screen.c:264: waitpadup();
 	jp	_waitpadup
 ___str_4:
 	.ascii "Tic Tac Toe !"
@@ -806,45 +999,45 @@ ___str_4:
 ___str_5:
 	.ascii "- PRESS START -"
 	.db 0x00
-;Title_screen.c:210: void	mode_screen(UINT8 y)
+;Title_screen.c:267: void	mode_screen(UINT8 y)
 ;	---------------------------------
 ; Function mode_screen
 ; ---------------------------------
 _mode_screen::
-;Title_screen.c:212: gotoxy(3, 7);
+;Title_screen.c:269: gotoxy(3, 7);
 	ld	hl,#0x0703
 	push	hl
 	call	_gotoxy
 	add	sp, #2
-;Title_screen.c:213: setchar(' ');
+;Title_screen.c:270: setchar(' ');
 	ld	a,#0x20
 	push	af
 	inc	sp
 	call	_setchar
 	inc	sp
-;Title_screen.c:214: gotoxy(3, 8);
+;Title_screen.c:271: gotoxy(3, 8);
 	ld	hl,#0x0803
 	push	hl
 	call	_gotoxy
 	add	sp, #2
-;Title_screen.c:215: setchar(' ');
+;Title_screen.c:272: setchar(' ');
 	ld	a,#0x20
 	push	af
 	inc	sp
 	call	_setchar
 	inc	sp
-;Title_screen.c:216: gotoxy(3, 9);
+;Title_screen.c:273: gotoxy(3, 9);
 	ld	hl,#0x0903
 	push	hl
 	call	_gotoxy
 	add	sp, #2
-;Title_screen.c:217: setchar(' ');
+;Title_screen.c:274: setchar(' ');
 	ld	a,#0x20
 	push	af
 	inc	sp
 	call	_setchar
 	inc	sp
-;Title_screen.c:218: gotoxy(3, 7 + y);
+;Title_screen.c:275: gotoxy(3, 7 + y);
 	ldhl	sp,#2
 	ld	a,(hl)
 	add	a, #0x07
@@ -855,81 +1048,81 @@ _mode_screen::
 	inc	sp
 	call	_gotoxy
 	add	sp, #2
-;Title_screen.c:219: setchar('>');
+;Title_screen.c:276: setchar('>');
 	ld	a,#0x3E
 	push	af
 	inc	sp
 	call	_setchar
 	inc	sp
 	ret
-;Title_screen.c:222: void	select_mode()
+;Title_screen.c:279: void	select_mode()
 ;	---------------------------------
 ; Function select_mode
 ; ---------------------------------
 _select_mode::
 	add	sp, #-2
-;Title_screen.c:227: clear_screen();
+;Title_screen.c:284: clear_screen();
 	call	_clear_screen
-;Title_screen.c:228: gotoxy(3, 5);
+;Title_screen.c:285: gotoxy(3, 5);
 	ld	hl,#0x0503
 	push	hl
 	call	_gotoxy
 	add	sp, #2
-;Title_screen.c:229: printf("Select a mode :");
+;Title_screen.c:286: printf("Select a mode :");
 	ld	de,#___str_6
 	push	de
 	call	_printf
 	add	sp, #2
-;Title_screen.c:230: gotoxy(4, 7);
+;Title_screen.c:287: gotoxy(4, 7);
 	ld	hl,#0x0704
 	push	hl
 	call	_gotoxy
 	add	sp, #2
-;Title_screen.c:231: printf("1 Player");
+;Title_screen.c:288: printf("1 Player");
 	ld	de,#___str_7
 	push	de
 	call	_printf
 	add	sp, #2
-;Title_screen.c:232: gotoxy(4, 8);
+;Title_screen.c:289: gotoxy(4, 8);
 	ld	hl,#0x0804
 	push	hl
 	call	_gotoxy
 	add	sp, #2
-;Title_screen.c:233: printf("2 Players");
+;Title_screen.c:290: printf("2 Players");
 	ld	de,#___str_8
 	push	de
 	call	_printf
 	add	sp, #2
-;Title_screen.c:234: gotoxy(4, 9);
+;Title_screen.c:291: gotoxy(4, 9);
 	ld	hl,#0x0904
 	push	hl
 	call	_gotoxy
 	add	sp, #2
-;Title_screen.c:235: printf("Return");
+;Title_screen.c:292: printf("Return");
 	ld	de,#___str_9
 	push	de
 	call	_printf
 	add	sp, #2
-;Title_screen.c:237: mode = 0;
+;Title_screen.c:294: mode = 0;
 	ld	b,#0x00
-;Title_screen.c:238: while (1)
-00116$:
-;Title_screen.c:240: mode_screen(mode);
+;Title_screen.c:295: while (1)
+00117$:
+;Title_screen.c:297: mode_screen(mode);
 	push	bc
 	push	bc
 	inc	sp
 	call	_mode_screen
 	inc	sp
 	pop	bc
-;Title_screen.c:241: key = waitpad(J_A | J_B | J_UP | J_DOWN);
+;Title_screen.c:298: key = waitpad(J_A | J_B | J_START | J_UP | J_DOWN);
 	push	bc
-	ld	a,#0x3C
+	ld	a,#0xBC
 	push	af
 	inc	sp
 	call	_waitpad
 	inc	sp
 	pop	bc
-;Title_screen.c:242: if (key == J_B)
+;Title_screen.c:299: if (key == J_B)
 	ldhl	sp,#0
 	ld	(hl),e
 	inc	hl
@@ -942,12 +1135,12 @@ _select_mode::
 	ld	a,(hl)
 	or	a, a
 	jr	NZ,00102$
-;Title_screen.c:244: title_screen();
+;Title_screen.c:301: title_screen();
 	call	_title_screen
-;Title_screen.c:245: return ;
-	jp	00118$
+;Title_screen.c:302: return ;
+	jp	00119$
 00102$:
-;Title_screen.c:247: if (key == J_DOWN && mode != 2)
+;Title_screen.c:304: if (key == J_DOWN && mode != 2)
 	ldhl	sp,#0
 	ld	a,(hl)
 	sub	a, #0x08
@@ -959,9 +1152,9 @@ _select_mode::
 	ld	a,b
 	sub	a, #0x02
 	jr	Z,00104$
-;Title_screen.c:249: mode++;
+;Title_screen.c:306: mode++;
 	inc	b
-;Title_screen.c:250: mode_screen(mode);
+;Title_screen.c:307: mode_screen(mode);
 	push	bc
 	push	bc
 	inc	sp
@@ -969,7 +1162,7 @@ _select_mode::
 	inc	sp
 	pop	bc
 00104$:
-;Title_screen.c:252: if (key == J_UP && mode != 0)
+;Title_screen.c:309: if (key == J_UP && mode != 0)
 	ldhl	sp,#0
 	ld	a,(hl)
 	sub	a, #0x04
@@ -981,9 +1174,9 @@ _select_mode::
 	ld	a,b
 	or	a, a
 	jr	Z,00107$
-;Title_screen.c:254: mode--;
+;Title_screen.c:311: mode--;
 	dec	b
-;Title_screen.c:255: mode_screen(mode);
+;Title_screen.c:312: mode_screen(mode);
 	push	bc
 	push	bc
 	inc	sp
@@ -991,48 +1184,58 @@ _select_mode::
 	inc	sp
 	pop	bc
 00107$:
-;Title_screen.c:257: if (key == J_A)
+;Title_screen.c:314: if (key == J_A || key == J_START)
 	ldhl	sp,#0
 	ld	a,(hl)
 	sub	a, #0x10
+	jr	NZ,00160$
+	inc	hl
+	ld	a,(hl)
+	or	a, a
+	jr	Z,00113$
+00160$:
+	ldhl	sp,#0
+	ld	a,(hl)
+	sub	a, #0x80
 	jr	NZ,00114$
 	inc	hl
 	ld	a,(hl)
 	or	a, a
 	jr	NZ,00114$
-;Title_screen.c:259: switch (mode)
+00113$:
+;Title_screen.c:316: switch (mode)
 	ld	a,#0x02
 	sub	a, b
 	jr	C,00114$
 	ld	e,b
 	ld	d,#0x00
-	ld	hl,#00161$
+	ld	hl,#00163$
 	add	hl,de
 	add	hl,de
-;Title_screen.c:261: case 0:
+;Title_screen.c:318: case 0:
 	jp	(hl)
-00161$:
+00163$:
 	jr	00109$
 	jr	00110$
-	jr	00118$
+	jr	00119$
 00109$:
-;Title_screen.c:262: game();
+;Title_screen.c:319: game();
 	call	_game
-;Title_screen.c:263: case 1:
+;Title_screen.c:320: case 1:
 00110$:
-;Title_screen.c:264: game();
-	call	_game
-;Title_screen.c:265: case 2:
-;Title_screen.c:266: return ;
-	jr	00118$
-;Title_screen.c:267: }
+;Title_screen.c:321: game2();
+	call	_game2
+;Title_screen.c:322: case 2:
+;Title_screen.c:323: return ;
+	jr	00119$
+;Title_screen.c:324: }
 00114$:
-;Title_screen.c:269: waitpadup();
+;Title_screen.c:326: waitpadup();
 	push	bc
 	call	_waitpadup
 	pop	bc
-	jp	00116$
-00118$:
+	jp	00117$
+00119$:
 	add	sp, #2
 	ret
 ___str_6:
@@ -1047,16 +1250,16 @@ ___str_8:
 ___str_9:
 	.ascii "Return"
 	.db 0x00
-;Title_screen.c:273: void	main(void)
+;Title_screen.c:330: void	main(void)
 ;	---------------------------------
 ; Function main
 ; ---------------------------------
 _main::
-;Title_screen.c:275: while (1)
+;Title_screen.c:332: while (1)
 00102$:
-;Title_screen.c:277: title_screen();
+;Title_screen.c:334: title_screen();
 	call	_title_screen
-;Title_screen.c:278: select_mode();
+;Title_screen.c:335: select_mode();
 	call	_select_mode
 	jr	00102$
 	ret
